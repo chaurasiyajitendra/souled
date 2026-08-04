@@ -1,0 +1,231 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Edit Profile</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/editProfile.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    {% include 'navbar.html' %}
+
+    <!-- ===========================
+            PAGE HEADER
+    ============================ -->
+
+    <section class="edit-header">
+      <div class="header-content">
+        <span class="tag">
+          <i class="fa-solid fa-user-pen"></i>
+          My Account
+        </span>
+
+        <h1>Edit Profile</h1>
+
+        <p>
+          Keep your profile information up to date. Your personal information is
+          secure and only visible to you.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===========================
+            EDIT PROFILE
+    ============================ -->
+
+    <section class="edit-profile">
+      <form method="POST" action="/edit-profile/" enctype="multipart/form-data" class="edit-card">
+        {% csrf_token %}
+
+        <!-- LEFT SIDE -->
+
+        <div class="profile-left">
+          <div class="profile-image">
+            {% if user.profile %}
+
+            <img src="{{ user.profile.url }}" alt="Profile" />
+
+            {% else %}
+
+            <img src="{% static 'images/image.png' %}" alt="Profile" />
+
+            {% endif %}
+
+            <label for="profile">
+              <i class="fa-solid fa-camera"></i>
+            </label>
+
+            <input type="file" id="profile" name="profile" hidden />
+          </div>
+
+          <h2>{{ user.name }}</h2>
+
+          <span>@{{ user.username }}</span>
+
+          <div class="account-status">
+            <div class="status success">
+              <i class="fa-solid fa-circle-check"></i>
+
+              Active Account
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="profile-right">
+          <div class="section-title">
+            <h2>Personal Information</h2>
+
+            <p>Update your account details below.</p>
+          </div>
+
+          <div class="form-grid">
+            <!-- NAME -->
+
+            <div class="input-group">
+              <label>
+                <i class="fa-solid fa-user"></i>
+
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                value="{{ user.name }}"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <!-- USERNAME -->
+
+            <div class="input-group">
+              <label>
+                <i class="fa-solid fa-at"></i>
+
+                Username
+              </label>
+
+              <input
+                type="text"
+                name="username"
+                value="{{ user.username }}"
+                placeholder="Username"
+                required
+              />
+            </div>
+
+            <!-- EMAIL -->
+
+            <div class="input-group">
+              <label>
+                <i class="fa-solid fa-envelope"></i>
+
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                name="email"
+                value="{{ user.email }}"
+                placeholder="Enter email"
+                required
+              />
+            </div>
+
+            <!-- PHONE -->
+
+            <div class="input-group">
+              <label>
+                <i class="fa-solid fa-phone"></i>
+
+                Phone Number
+              </label>
+
+              <input
+                type="text"
+                name="phone"
+                value="{{ user.phone }}"
+                placeholder="Enter phone number"
+              />
+            </div>
+          </div>
+
+          <!-- ADDRESS -->
+
+          <div class="input-group textarea">
+            <label>
+              <i class="fa-solid fa-location-dot"></i>
+
+              Address
+            </label>
+
+            <textarea name="address" rows="5" placeholder="Enter your address">
+{{ user.address }}</textarea
+            >
+          </div>
+
+          <!-- ACCOUNT INFO -->
+
+          <div class="account-info">
+            <div class="info-box">
+              <i class="fa-solid fa-calendar-plus"></i>
+
+              <div>
+                <span>Account Created</span>
+
+                <h4>{{ user.createAt }}</h4>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+
+              <div>
+                <span>Last Login</span>
+
+                <h4>{{ user.loginAt }}</h4>
+              </div>
+            </div>
+          </div>
+          <!-- ACTION BUTTONS -->
+
+          <div class="form-actions">
+            <button type="submit" class="save-btn">
+              <i class="fa-solid fa-floppy-disk"></i>
+
+              Save Changes
+            </button>
+
+            <a href="{% url 'profile' %}" class="cancel-btn">
+              <i class="fa-solid fa-arrow-left"></i>
+
+              Cancel
+            </a>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===========================
+            FOOTER
+    ============================ -->
+
+    <footer class="edit-footer">
+      <p>© 2026 <strong>ShopKart</strong>. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

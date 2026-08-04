@@ -1,0 +1,82 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ child_category.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/product.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    {% include 'navbar.html' %}
+
+
+    <section class="products">
+      
+      <div class="heading">
+        {% if child_category %}
+        <h1>{{ child_category.name }}</h1>
+
+        {% elif subcategory %}
+        <h1>{{ subcategory.name }}</h1>
+
+        {% elif category %}
+        <h1>{{ category.name }}</h1>
+
+        {% else %}
+        <h1>All Products</h1>
+
+        {% endif %}
+
+        <p>Showing {{ products|length }} Products</p>
+      </div>
+
+      <div class="product-grid">
+        {% for product in products %}
+
+        <div class="card">
+          <span class="badge">New</span>
+
+          <a href="{% url 'product_detail' product.id %}">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+            {% else %}
+            <img src="https://placehold.co/300x250" alt="No Image" />
+            {% endif %}
+          </a>
+
+          <div class="content">
+            <h3>
+                <a style="text-decoration: none; text-transform: capitalize; color: blue;" href="{% url 'product_detail' product.id %}">
+                    {{ product.name }}
+                </a>
+            </h3>
+
+            <div class="rating">⭐⭐⭐⭐⭐</div>
+
+            <h2>₹{{ product.price }}</h2>
+
+            <button>
+              <i class="fa-solid fa-cart-shopping"></i>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        {% empty %}
+
+        <h2>No Products Found.</h2>
+
+        {% endfor %}
+      </div>
+    </section>
+  </body>
+</html>

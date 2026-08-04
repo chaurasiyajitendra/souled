@@ -1,0 +1,284 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ product.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/productDetail.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    {% include "navbar.html" %}
+
+    <!-- ================= Breadcrumb ================= -->
+
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+
+      <i class="fa-solid fa-angle-right"></i>
+
+      <a href="/{{product.category.slug}}/"> {{product.category.name}} </a>
+
+      <i class="fa-solid fa-angle-right"></i>
+
+      <a href="/{{product.category.slug}}/{{product.subCategory.slug}}/">
+        {{product.subCategory.name}}
+      </a>
+
+      <i class="fa-solid fa-angle-right"></i>
+
+      <span>{{product.name}}</span>
+    </div>
+
+    <!-- ================= Product ================= -->
+
+    <section class="product-detail">
+      <div class="product-image">
+        {% if product.image %}
+
+        <img src="{{product.image.url}}" alt="{{product.name}}" />
+
+        {% else %}
+
+        <img src="https://placehold.co/600x600" />
+
+        {% endif %}
+      </div>
+
+      <div class="product-info">
+        <span class="category-badge"> {{product.category.name}} </span>
+
+        <h1>{{product.name}}</h1>
+        <span class="wishlist-icon">
+          <a href="{% url 'addToWishlist' product.id %}">
+            <i class="fa-regular fa-heart" style="color: rgb(255, 138, 138)"></i>
+          </a>
+        </span>
+        <div class="rating">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-regular fa-star"></i>
+
+          <span> 4.5 (128 Reviews) </span>
+        </div>
+
+        <div class="price-box">
+          <h2>₹{{product.price}}</h2>
+
+          <del> ₹2999 </del>
+
+          <span class="discount"> 25% OFF </span>
+        </div>
+
+        <p class="description">{{product.detail}}</p>
+
+        <div class="info-box">
+          <div>
+            <strong>Category</strong>
+
+            <p>{{product.category.name}}</p>
+          </div>
+
+          <div>
+            <strong>Sub Category</strong>
+
+            <p>{{product.subCategory.name}}</p>
+          </div>
+
+          <div>
+            <strong>Type</strong>
+
+            <p>{{product.childCategory.name}}</p>
+          </div>
+
+          <div>
+            <strong>Status</strong>
+
+            <p class="stock">
+              <i class="fa-solid fa-circle-check"></i>
+
+              In Stock
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-box">
+          <div>
+            <i class="fa-solid fa-truck-fast"></i>
+
+            <span>Free Delivery</span>
+          </div>
+
+          <div>
+            <i class="fa-solid fa-rotate-left"></i>
+
+            <span>Easy Return</span>
+          </div>
+
+          <div>
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <span>Secure Payment</span>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <a class="cart-btn" href="{% url 'addToCart' product.id %}">
+            <i class="fa-solid fa-cart-shopping"></i>
+            Add To Cart
+          </a>
+
+          <button class="buy-btn">
+            <i class="fa-solid fa-bolt"></i>
+            Buy Now
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="description-card">
+      <h2>Product Description</h2>
+
+      <p>{{product.detail}}</p>
+    </section>
+
+    <!-- ================= Suggested Products ================= -->
+
+    <section class="related-products">
+      <div class="related-heading">
+        <div>
+          <h2>❤️ You May Also Like</h2>
+
+          <p>Similar products you might love.</p>
+        </div>
+      </div>
+
+      <div class="related-grid">
+        {% for item in related_products %}
+
+        <div class="related-card">
+          <span class="badge"> New </span>
+
+          {% if item.image %}
+
+          <img src="{{item.image.url}}" />
+
+          {% else %}
+
+          <img src="https://placehold.co/300x300" />
+
+          {% endif %}
+
+          <div class="related-content">
+            <h3>{{item.name}}</h3>
+
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+
+            <h4>₹{{item.price}}</h4>
+            <div class="related-buttons">
+              <a href="{% url 'product_detail' item.id %}" class="view-btn">
+                <i class="fa-solid fa-eye"></i>
+                View
+              </a>
+
+              <button class="cart-small-btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {% empty %}
+
+        <div class="empty-related">
+          <i class="fa-solid fa-box-open"></i>
+
+          <h3>No Similar Products</h3>
+
+          <p>We couldn't find any related products for this item.</p>
+        </div>
+
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ================= Extra Information ================= -->
+
+    <section class="extra-info">
+      <div class="extra-card">
+        <i class="fa-solid fa-truck-fast"></i>
+
+        <h3>Fast Delivery</h3>
+
+        <p>Get your order delivered within 2-5 business days across India.</p>
+      </div>
+
+      <div class="extra-card">
+        <i class="fa-solid fa-credit-card"></i>
+
+        <h3>Secure Payment</h3>
+
+        <p>Multiple payment methods with complete payment security.</p>
+      </div>
+
+      <div class="extra-card">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+
+        <h3>7 Days Return</h3>
+
+        <p>Easy replacement and return policy for eligible products.</p>
+      </div>
+
+      <div class="extra-card">
+        <i class="fa-solid fa-headset"></i>
+
+        <h3>24×7 Support</h3>
+
+        <p>Our support team is always ready to help you anytime.</p>
+      </div>
+    </section>
+
+    <!-- ================= Footer ================= -->
+
+    <footer class="footer">
+      <div class="footer-content">
+        <h2>ShopKart</h2>
+
+        <p>
+          Discover premium products at the best prices with secure shopping and
+          lightning-fast delivery.
+        </p>
+
+        <div class="footer-icons">
+          <a href="#">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+
+          <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+
+          <a href="#">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+
+          <a href="#">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="copyright">© 2026 ShopKart. All Rights Reserved.</div>
+    </footer>
+  </body>
+</html>

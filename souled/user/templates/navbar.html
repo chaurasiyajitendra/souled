@@ -1,0 +1,121 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/nav.css' %}" />
+<nav class="navbar">
+  <!-- Logo -->
+
+  <div class="logo">
+    <a href="{% url 'home' %}">
+      <i class="fa-solid fa-store"></i>
+
+      <span>ShopKart</span>
+    </a>
+  </div>
+
+  <!-- Menu -->
+
+  <ul class="menu">
+    <li>
+      <a href="{% url 'home' %}"> Home </a>
+    </li>
+
+    <li class="mega-dropdown">
+      <a href="#">
+        Categories
+        <i class="fa-solid fa-angle-down"></i>
+      </a>
+
+      <div class="mega-menu">
+        {% for category in categories %}
+
+        <div class="mega-column">
+          <h3>{{ category.name }}</h3>
+
+          {% for subcategory in category.subcategories.all %}
+
+          <h4>
+            <a
+              style="color: black"
+              href="{% url 'subcategory' category.slug subcategory.slug %}"
+              >{{ subcategory.name }}</a
+            >
+          </h4>
+
+          <ul>
+            {% for child in subcategory.childcategories.all %}
+
+            <li>
+              <a
+                href="{% url 'childcategory' category.slug subcategory.slug child.slug %}"
+              >
+                {{ child.name }}
+              </a>
+            </li>
+
+            {% endfor %}
+          </ul>
+
+          {% endfor %}
+        </div>
+
+        {% endfor %}
+
+        <div class="mega-banner">
+          <h2>New Collection</h2>
+
+          <p>Explore latest products</p>
+
+          <button>Shop Now</button>
+        </div>
+      </div>
+    </li>
+
+    <li>
+      <a href="{% url 'about' %}"> About </a>
+    </li>
+
+    <li>
+      <a href="{% url 'contact' %}"> Contact </a>
+    </li>
+  </ul>
+
+  <!-- Search -->
+
+  <div class="search">
+    <form>
+      <input type="text" placeholder="Search products..." />
+
+      <button>
+        <i class="fa-solid fa-search"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Icons -->
+
+  <div class="icons">
+    <a href="/wishlist" class="icon">
+      <i class="fa-regular fa-heart"></i>
+      <span class="badge">2</span>
+    </a>
+
+    <a href="/cart" class="icon">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span class="badge">3</span>
+    </a>
+
+    {% if request.session.username %}
+
+    <a href="/profile/" class="icon">
+      <i class="fa-solid fa-user"></i>
+    </a>
+
+    <a href="/logout/" class="login-btn"> Logout </a>
+
+    {% else %}
+
+    <a href="/login/" class="login-btn"> Login </a>
+
+    {% endif %}
+  </div>
+</nav>

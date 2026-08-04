@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Wishlist</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/wishlist.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+{% include "navbar.html" %}
+
+<!--========================
+        HERO
+=========================-->
+
+<section class="wishlist-hero">
+
+    <div class="hero-content">
+
+        <span>
+
+            <i class="fa-solid fa-heart"></i>
+
+            My Wishlist
+
+        </span>
+
+        <h1>Saved Products</h1>
+
+        <p>
+
+            Keep all your favourite products in one place and purchase them anytime.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!--========================
+        WISHLIST
+=========================-->
+
+<section class="wishlist-section">
+
+<div class="wishlist-container">
+
+{% if wishlist_items %}
+
+<div class="wishlist-grid">
+
+{% for item in wishlist_items %}
+
+<div class="wishlist-card">
+
+<div class="wishlist-image">
+
+    {% if item.product.image %}
+
+    <img src="{{ item.product.image.url }}"
+         alt="{{ item.product.name }}">
+
+    {% else %}
+
+    <img src="https://placehold.co/350x350"
+         alt="No Image">
+
+    {% endif %}
+
+    <a href="{% url 'removeWishlist' item.id %}"
+       class="remove-btn">
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </a>
+
+</div>
+
+<div class="wishlist-content">
+
+<h3>
+
+{{ item.product.name }}
+
+</h3>
+
+<p>
+
+{{ item.product.detail|truncatechars:90 }}
+
+</p>
+
+<div class="price">
+
+₹{{ item.product.price }}
+
+</div>
+<div class="wishlist-actions">
+
+    <a href="{% url 'product_detail' item.product.id %}"
+       class="view-btn">
+
+        <i class="fa-solid fa-eye"></i>
+
+        View Product
+
+    </a>
+
+    <a href="{% url 'addToCart' item.product.id %}"
+       class="cart-btn">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        Add to Cart
+
+    </a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<!--========================
+        EMPTY WISHLIST
+=========================-->
+
+<div class="empty-wishlist">
+
+    <div class="empty-icon">
+
+        <i class="fa-regular fa-heart"></i>
+
+    </div>
+
+    <h2>Your Wishlist is Empty</h2>
+
+    <p>
+
+        Save your favourite products here and buy them later.
+
+    </p>
+
+    <a href="{% url 'home' %}"
+       class="shop-btn">
+
+        <i class="fa-solid fa-bag-shopping"></i>
+
+        Continue Shopping
+
+    </a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</section>
+<!--========================
+        FOOTER
+=========================-->
+
+<footer class="wishlist-footer">
+
+    <div class="footer-content">
+
+        <p>
+
+            © 2026 <strong>ShopKart</strong>. All Rights Reserved.
+
+        </p>
+
+        <div class="footer-icons">
+
+            <i class="fa-brands fa-facebook-f"></i>
+
+            <i class="fa-brands fa-instagram"></i>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+            <i class="fa-brands fa-linkedin-in"></i>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

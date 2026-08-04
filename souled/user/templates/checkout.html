@@ -1,0 +1,279 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    {% include "navbar.html" %}
+
+    <!-- Hidden CSRF Token for Security -->
+    {% csrf_token %}
+
+    <section class="cart-hero">
+      <div class="hero-content">
+        <span class="hero-tag">
+          <i class="fa-solid fa-cart-shopping"></i> Shopping Cart
+        </span>
+        <h1>Your Cart</h1>
+        <p>
+          Review your selected products before proceeding to checkout. Enjoy
+          secure shopping with ShopKart.
+        </p>
+      </div>
+    </section>
+
+    <section class="cart-section">
+      <div class="cart-container">
+        {% if cart_items %}
+
+        <div class="cart-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for item in cart_items %}
+              <!-- Dynamic ID per row -->
+              <tr id="cart-item-row-{{ item.id }}">
+                <td>
+                  <div class="product-info">
+                    <div class="product-image">
+                      {% if item.product.image %}
+                      <img
+                        src="{{ item.product.image.url }}"
+                        alt="{{ item.product.name }}"
+                      />
+                      {% else %}
+                      <img src="https://placehold.co/120x120" alt="No Image" />
+                      {% endif %}
+                    </div>
+
+                    <div class="product-details">
+                      <h3>{{ item.product.name }}</h3>
+                      <p>{{ item.product.detail|truncatechars:70 }}</p>
+                    </div>
+                  </div>
+                </td>
+
+                <td>₹{{ item.product.price }}</td>
+
+                <td>
+                  <div class="quantity-box">
+                    <button type="button" class="qty-btn btn-decrease" data-url="{% url 'decreaseCart' item.id %}" data-item-id="{{ item.id }}">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+
+                    <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
+
+                    <button type="button" class="qty-btn btn-increase" data-url="{% url 'increaseCart' item.id %}" data-item-id="{{ item.id }}">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </td>
+
+                <td>
+                  <strong>₹<span id="subtotal-{{ item.id }}">{{ item.subtotal }}</span></strong>
+                </td>
+
+                <td>
+                  <button type="button" class="remove-btn btn-remove" data-url="{% url 'removeFromCart' item.id %}" data-item-id="{{ item.id }}">
+                    <i class="fa-solid fa-trash"></i> Remove
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cart-bottom">
+          <!-- LEFT SIDE -->
+          <div class="coupon-card">
+            <h3><i class="fa-solid fa-ticket"></i> Apply Coupon</h3>
+            <p>Have a promo code? Enter it below to get exciting discounts.</p>
+
+            <form action="#" method="POST">
+              {% csrf_token %}
+              <div class="coupon-box">
+                <input
+                  type="text"
+                  name="coupon"
+                  placeholder="Enter Coupon Code"
+                />
+                <button type="submit">Apply</button>
+              </div>
+            </form>
+
+            <a href="{% url 'home' %}" class="continue-btn">
+              <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+            </a>
+          </div>
+
+          <!-- RIGHT SIDE -->
+          <div class="summary-card">
+            <h2>Cart Summary</h2>
+
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong>₹<span class="cart-total-display">{{ total }}</span></strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Shipping</span>
+              <strong class="free">FREE</strong>
+            </div>
+
+            <div class="summary-row">
+              <span>Tax</span>
+              <strong>₹0</strong>
+            </div>
+
+            <hr />
+
+            <div class="summary-total">
+              <span>Total</span>
+              <h3>₹<span class="cart-total-display">{{ total }}</span></h3>
+            </div>
+
+            <a href="" class="checkout-btn">
+              <i class="fa-solid fa-credit-card"></i> Proceed to Checkout
+            </a>
+          </div>
+        </div>
+
+        {% else %}
+
+        <div class="empty-cart">
+          <div class="empty-icon">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </div>
+          <h2>Your Cart is Empty</h2>
+          <p>
+            Looks like you haven't added anything to your cart yet. Explore our
+            latest collections and find something you'll love.
+          </p>
+          <div class="empty-features">
+            <div class="feature">
+              <i class="fa-solid fa-truck-fast"></i>
+              <span>Free Shipping</span>
+            </div>
+            <div class="feature">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>Secure Payment</span>
+            </div>
+            <div class="feature">
+              <i class="fa-solid fa-rotate-left"></i>
+              <span>Easy Returns</span>
+            </div>
+          </div>
+          <a href="{% url 'home' %}" class="shop-btn">
+            <i class="fa-solid fa-bag-shopping"></i> Start Shopping
+          </a>
+        </div>
+
+        {% endif %}
+      </div>
+    </section>
+
+    <footer class="cart-footer">
+      <div class="footer-content">
+        <p>© 2026 <strong>ShopKart</strong>. All Rights Reserved.</p>
+        <div class="footer-icons">
+          <i class="fa-brands fa-cc-visa"></i>
+          <i class="fa-brands fa-cc-mastercard"></i>
+          <i class="fa-brands fa-cc-paypal"></i>
+          <i class="fa-brands fa-google-pay"></i>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript AJAX Handler -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+        // Common Handler Function
+        function handleCartAction(url, itemId) {
+          fetch(url, {
+            method: "POST",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "X-CSRFToken": csrfToken,
+              "Content-Type": "application/json"
+            }
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "updated") {
+              // Update Quantity & Subtotal for item
+              document.getElementById(`qty-${itemId}`).innerText = data.quantity;
+              document.getElementById(`subtotal-${itemId}`).innerText = data.subtotal;
+            } else if (data.status === "deleted") {
+              // Fade out & remove row if item deleted
+              const row = document.getElementById(`cart-item-row-${itemId}`);
+              if (row) {
+                row.remove();
+              }
+              
+              // If table becomes empty, page reload for empty cart screen
+              const remainingRows = document.querySelectorAll("tbody tr");
+              if (remainingRows.length === 0) {
+                window.location.reload();
+              }
+            }
+
+            // Update Total Amounts everywhere
+            document.querySelectorAll(".cart-total-display").forEach(el => {
+              el.innerText = data.total;
+            });
+          })
+          .catch(err => console.error("AJAX Error:", err));
+        }
+
+        // Event Listener for Increase
+        document.querySelectorAll(".btn-increase").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const url = this.getAttribute("data-url");
+            const itemId = this.getAttribute("data-item-id");
+            handleCartAction(url, itemId);
+          });
+        });
+
+        // Event Listener for Decrease
+        document.querySelectorAll(".btn-decrease").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const url = this.getAttribute("data-url");
+            const itemId = this.getAttribute("data-item-id");
+            handleCartAction(url, itemId);
+          });
+        });
+
+        // Event Listener for Remove
+        document.querySelectorAll(".btn-remove").forEach(btn => {
+          btn.addEventListener("click", function () {
+            const url = this.getAttribute("data-url");
+            const itemId = this.getAttribute("data-item-id");
+            handleCartAction(url, itemId);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

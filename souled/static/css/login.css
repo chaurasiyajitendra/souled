@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#2563eb);
+}
+
+.container{
+    width:900px;
+    height:600px;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+
+.left{
+    width:45%;
+    background:linear-gradient(135deg,#2563eb,#0f172a);
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+    text-align:center;
+}
+
+.left h1{
+    font-size:40px;
+    margin-bottom:15px;
+}
+span {
+    color: red;
+    margin-bottom: 1.1rem;
+    text-transform: capitalize;
+    font-weight: 500;
+    display: inline-block; 
+    
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+span.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.right{
+    width:55%;
+    display:flex;
+    justify-content:center;
+    flex-direction: column;
+    align-items:center;
+}
+
+form{
+    width:80%;
+}
+
+h2{
+    margin-bottom:30px;
+    text-align:center;
+    font-size: 2rem;
+}
+
+.input-box{
+    display:flex;
+    align-items:center;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:20px;
+    padding:0 15px;
+}
+
+.input-box i{
+    color:#2563eb;
+}
+
+.input-box input{
+    width:100%;
+    padding:15px;
+    border:none;
+    outline:none;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+p{
+    text-align:center;
+    margin-top:20px;
+}
+
+a{
+    text-decoration:none;
+    color:#2563eb;
+    font-weight:600;
+}

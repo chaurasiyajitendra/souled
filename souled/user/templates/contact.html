@@ -1,0 +1,211 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | ShopKart</title>
+
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    {% include "navbar.html" %}
+
+    <!-- ==========================
+        CONTACT HERO
+========================== -->
+
+    <section class="contact-hero">
+      <div class="hero-content">
+        <span>GET IN TOUCH</span>
+
+        <h1>
+          We'd Love To
+          <br />
+          Hear From You
+        </h1>
+
+        <p>
+          Have questions about products, orders, shipping, or anything else? Our
+          team is ready to help.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==========================
+        CONTACT SECTION
+========================== -->
+
+    <section class="contact-section">
+      <div class="contact-info">
+        <span>Contact Information</span>
+
+        <h2>Let's Start A Conversation</h2>
+
+        <p>Reach out to us anytime. We usually respond within 24 hours.</p>
+
+        <div class="info-box">
+          <i class="fa-solid fa-location-dot"></i>
+
+          <div>
+            <h4>Address</h4>
+            <p>Ahmedabad, Gujarat, India</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <i class="fa-solid fa-phone"></i>
+
+          <div>
+            <h4>Phone</h4>
+            <p>+91 9876543210</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <i class="fa-solid fa-envelope"></i>
+
+          <div>
+            <h4>Email</h4>
+            <p>support@shopkart.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="input-group">
+            <input type="text" name="name" placeholder="Your Name" />
+          </div>
+
+          <div class="input-group">
+            <input type="email" name="email" placeholder="Your Email" />
+          </div>
+
+          <div class="input-group">
+            <input type="text" name="subject" placeholder="Subject" />
+          </div>
+
+          <div class="input-group">
+            <textarea
+              name="message"
+              rows="6"
+              placeholder="Write your message..."
+            ></textarea>
+          </div>
+
+          <button type="submit">
+            <i class="fa-solid fa-paper-plane"></i>
+            Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+    <!-- ==========================
+        QUICK CONTACT
+========================== -->
+
+    <section class="contact-cards">
+      <div class="section-title">
+        <span>Why Contact Us?</span>
+        <h2>We're Always Here To Help</h2>
+      </div>
+
+      <div class="cards">
+        <div class="contact-card">
+          <i class="fa-solid fa-headset"></i>
+          <h3>24/7 Support</h3>
+          <p>
+            Our support team is available to help you with orders, payments and
+            any shopping questions.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <i class="fa-solid fa-box-open"></i>
+          <h3>Order Help</h3>
+          <p>
+            Facing issues with your order? We'll quickly assist you with
+            delivery and tracking.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <i class="fa-solid fa-shield-heart"></i>
+          <h3>Customer Care</h3>
+          <p>
+            Your satisfaction is our priority. We always try to provide the best
+            shopping experience.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================
+            FAQ
+========================== -->
+
+    <section class="faq">
+      <div class="section-title">
+        <span>FAQ</span>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <h3>How long does delivery take?</h3>
+          <p>
+            Most orders are delivered within 3–7 business days depending on your
+            location.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Can I return a product?</h3>
+          <p>
+            Yes. Eligible products can be returned within 7 days after delivery.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How can I track my order?</h3>
+          <p>
+            After your order is shipped, you'll receive a tracking link by email
+            or SMS.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================
+            CTA
+========================== -->
+
+    <section class="contact-cta">
+      <h2>Still Have Questions?</h2>
+
+      <p>We're just one message away. Our team is always ready to help you.</p>
+
+      <a href="/" class="home-btn">
+        <i class="fa-solid fa-store"></i>
+        Continue Shopping
+      </a>
+    </section>
+
+    <!-- ==========================
+            FOOTER
+========================== -->
+
+    <footer class="contact-footer">
+      <p>© 2026 <strong>ShopKart</strong>. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

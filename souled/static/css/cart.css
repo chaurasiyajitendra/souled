@@ -1,0 +1,835 @@
+/*=========================================
+            CART HERO
+=========================================*/
+
+.cart-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 8% 140px;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+  color: #fff;
+}
+
+.cart-hero::before {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  top: -120px;
+  right: -100px;
+}
+
+.cart-hero::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  bottom: -100px;
+  left: -80px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 20px;
+}
+
+.hero-content h1 {
+  font-size: 52px;
+  margin-bottom: 18px;
+}
+
+.hero-content p {
+  max-width: 600px;
+  line-height: 1.8;
+  color: #dbeafe;
+  font-size: 17px;
+}
+
+/*=========================================
+            CART SECTION
+=========================================*/
+
+.cart-section {
+  padding: 0 8% 80px;
+  margin-top: -70px;
+  position: relative;
+  z-index: 10;
+}
+
+.cart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/*=========================================
+            TABLE
+=========================================*/
+
+.cart-table {
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.1),
+    0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.cart-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table thead {
+  background: #0f172a;
+}
+
+.cart-table thead th {
+  color: #fff;
+  padding: 22px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cart-table tbody tr {
+  border-bottom: 1px solid #edf2f7;
+  transition: 0.3s;
+}
+
+.cart-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+.cart-table tbody td {
+  padding: 22px;
+  vertical-align: middle;
+}
+
+/*=========================================
+        PRODUCT INFO
+=========================================*/
+
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.product-image {
+  width: 95px;
+  height: 95px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f8fafc;
+  flex-shrink: 0;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.35s;
+}
+
+.product-image:hover img {
+  transform: scale(1.08);
+}
+
+.product-details h3 {
+  color: #0f172a;
+  margin-bottom: 8px;
+  font-size: 20px;
+  text-transform: capitalize;
+}
+
+.product-details p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+/*=========================================
+            CART BOTTOM
+=========================================*/
+
+.cart-bottom {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/*=========================================
+            COUPON CARD
+=========================================*/
+
+.coupon-card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 35px;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.1),
+    0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.coupon-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #0f172a;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.coupon-card h3 i {
+  color: #2563eb;
+}
+
+.coupon-card p {
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.coupon-box {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.coupon-box input {
+  flex: 1;
+  height: 55px;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 0 18px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.coupon-box input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.coupon-box button {
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  padding: 0 28px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.coupon-box button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.25);
+}
+
+/*=========================================
+        CONTINUE SHOPPING
+=========================================*/
+
+.continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.continue-btn:hover {
+  gap: 15px;
+}
+
+/*=========================================
+        QUANTITY BOX
+=========================================*/
+
+.quantity-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.qty-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #eff6ff;
+  color: #2563eb;
+  transition: 0.3s;
+}
+
+.qty-btn:hover {
+  background: #2563eb;
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.quantity-box span {
+  min-width: 35px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/*=========================================
+        REMOVE BUTTON
+=========================================*/
+
+.remove-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #dc2626;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.remove-btn:hover {
+  background: #dc2626;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/*=========================================
+        SUMMARY CARD
+=========================================*/
+
+.summary-card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 35px;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.1),
+    0 8px 20px rgba(15, 23, 42, 0.05);
+  position: sticky;
+  top: 100px;
+}
+
+.summary-card h2 {
+  color: #0f172a;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.summary-row,
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-row {
+  margin-bottom: 18px;
+  color: #475569;
+  font-size: 16px;
+}
+
+.summary-row strong {
+  color: #0f172a;
+}
+
+.summary-row .free {
+  color: #16a34a;
+}
+
+.summary-card hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 25px 0;
+}
+
+.summary-total span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.summary-total h3 {
+  color: #2563eb;
+  font-size: 34px;
+}
+
+/*=========================================
+        CHECKOUT BUTTON
+=========================================*/
+
+.checkout-btn {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 17px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.35s;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+}
+
+.checkout-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.35);
+}
+
+.checkout-btn i {
+  transition: 0.3s;
+}
+
+.checkout-btn:hover i {
+  transform: translateX(5px);
+}
+/*=========================================
+            EMPTY CART
+=========================================*/
+
+.empty-cart {
+  background: #fff;
+  border-radius: 24px;
+  padding: 70px 40px;
+  text-align: center;
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.1),
+    0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.empty-icon {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 58px;
+  color: #2563eb;
+  background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  animation: floatCart 3s ease-in-out infinite;
+}
+
+.empty-cart h2 {
+  font-size: 38px;
+  color: #0f172a;
+  margin-bottom: 15px;
+}
+
+.empty-cart p {
+  max-width: 650px;
+  margin: 0 auto 35px;
+  color: #64748b;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/*=========================================
+        FEATURES
+=========================================*/
+
+.empty-features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 22px;
+  border-radius: 14px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.feature i {
+  color: #2563eb;
+  font-size: 18px;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  background: #2563eb;
+  color: #fff;
+}
+
+.feature:hover i {
+  color: #fff;
+}
+
+/*=========================================
+        SHOP BUTTON
+=========================================*/
+
+.shop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 35px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.35s;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+}
+
+.shop-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 40px rgba(37, 99, 235, 0.35);
+}
+
+.shop-btn:hover i {
+  transform: translateX(5px);
+}
+
+.shop-btn i {
+  transition: 0.3s;
+}
+
+/*=========================================
+            FOOTER
+=========================================*/
+
+.cart-footer {
+  margin-top: 60px;
+  background: #0f172a;
+  color: #cbd5e1;
+  padding: 28px 8%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-content strong {
+  color: #fff;
+}
+
+.footer-icons {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer-icons i {
+  font-size: 34px;
+  color: #94a3b8;
+  transition: 0.3s;
+}
+
+.footer-icons i:hover {
+  color: #60a5fa;
+  transform: translateY(-4px);
+}
+
+/*=========================================
+        CARD HOVER
+=========================================*/
+
+.cart-table,
+.coupon-card,
+.summary-card,
+.empty-cart {
+  transition: 0.35s ease;
+}
+
+.cart-table:hover,
+.coupon-card:hover,
+.summary-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 30px 60px rgba(15, 23, 42, 0.14),
+    0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+/*=========================================
+        ANIMATIONS
+=========================================*/
+
+@keyframes floatCart {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cart-container {
+  animation: fadeUp 0.7s ease;
+}
+/*=========================================
+        RESPONSIVE DESIGN
+=========================================*/
+
+@media (max-width: 1100px) {
+  .cart-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .cart-hero {
+    padding: 70px 6% 120px;
+    text-align: center;
+  }
+
+  .hero-content {
+    margin: auto;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .cart-section {
+    padding: 0 6% 70px;
+  }
+
+  .cart-table {
+    overflow-x: auto;
+  }
+
+  .cart-table table {
+    min-width: 850px;
+  }
+
+  .coupon-card,
+  .summary-card {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-hero {
+    padding: 60px 20px 110px;
+  }
+
+  .hero-content h1 {
+    font-size: 34px;
+  }
+
+  .hero-content p {
+    font-size: 15px;
+  }
+
+  .cart-section {
+    padding: 0 20px 60px;
+  }
+
+  .product-info {
+    gap: 12px;
+  }
+
+  .product-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .product-details h3 {
+    font-size: 17px;
+  }
+
+  .product-details p {
+    display: none;
+  }
+
+  .coupon-box {
+    flex-direction: column;
+  }
+
+  .coupon-box button {
+    height: 52px;
+  }
+
+  .summary-card h2 {
+    font-size: 26px;
+  }
+
+  .summary-total h3 {
+    font-size: 28px;
+  }
+
+  .empty-cart {
+    padding: 50px 25px;
+  }
+
+  .empty-cart h2 {
+    font-size: 30px;
+  }
+
+  .empty-icon {
+    width: 110px;
+    height: 110px;
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-icons {
+    justify-content: center;
+  }
+
+  .checkout-btn,
+  .shop-btn {
+    width: 100%;
+  }
+}
+
+/*=========================================
+        PREMIUM SCROLLBAR
+=========================================*/
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#2563eb, #1d4ed8);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1e40af;
+}
+
+/*=========================================
+        SMALL EFFECTS
+=========================================*/
+
+.qty-btn,
+.remove-btn,
+.checkout-btn,
+.shop-btn,
+.continue-btn,
+.coupon-box button {
+  transition: all 0.3s ease;
+}
+
+.qty-btn:active,
+.remove-btn:active,
+.checkout-btn:active,
+.shop-btn:active,
+.coupon-box button:active {
+  transform: scale(0.95);
+}
+
+.product-image img {
+  transition: transform 0.35s ease;
+}
+
+.cart-table tbody tr:hover .product-image img {
+  transform: scale(1.08);
+}
+
+.coupon-box input {
+  transition: all 0.3s ease;
+}
+
+.coupon-box input:hover {
+  border-color: #93c5fd;
+}
+
+.summary-card,
+.coupon-card,
+.cart-table,
+.empty-cart {
+  border: 1px solid #eef2f7;
+}
+
+/*=========================================
+        SMOOTH PAGE
+=========================================*/
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f8fafc;
+}

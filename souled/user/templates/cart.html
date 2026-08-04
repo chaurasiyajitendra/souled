@@ -1,0 +1,374 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Shopping Cart</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+
+  <body>
+    {% include "navbar.html" %}
+
+    <!--====================================
+            HERO SECTION
+=====================================-->
+
+    <section class="cart-hero">
+      <div class="hero-content">
+        <span class="hero-tag">
+          <i class="fa-solid fa-cart-shopping"></i>
+
+          Shopping Cart
+        </span>
+
+        <h1>Your Cart</h1>
+
+        <p>
+          Review your selected products before proceeding to checkout. Enjoy
+          secure shopping with ShopKart.
+        </p>
+      </div>
+    </section>
+
+    <!--====================================
+            CART SECTION
+=====================================-->
+
+    <section class="cart-section">
+      <div class="cart-container">
+        {% if cart_items %}
+
+        <div class="cart-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+
+                <th>Price</th>
+
+                <th>Quantity</th>
+
+                <th>Subtotal</th>
+
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for item in cart_items %}
+
+              <tr>
+                <td>
+                  <div class="product-info">
+                    <div class="product-image">
+                      {% if item.product.image %}
+
+                      <img
+                        src="{{ item.product.image.url }}"
+                        alt="{{ item.product.name }}"
+                      />
+
+                      {% else %}
+
+                      <img src="https://placehold.co/120x120" alt="No Image" />
+
+                      {% endif %}
+                    </div>
+
+                    <div class="product-details">
+                      <h3>{{ item.product.name }}</h3>
+
+                      <p>{{ item.product.detail|truncatechars:70 }}</p>
+                    </div>
+                  </div>
+                </td>
+
+                <td>₹{{ item.product.price }}</td>
+
+                <td>
+                  <div class="quantity-box">
+                    <button
+                      type="button"
+                      data-id="{{item.id}}"
+                      data-url="{% url 'decreaseCart' item.id %}"
+                      class="qty-btn decreaseBtn"
+                    >
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+
+                    <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
+
+                    <button
+                      type="button"
+                      data-id="{{item.id}}"
+                      data-url="{% url 'increaseCart' item.id %}"
+                      class="qty-btn increaseBtn"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                </td>
+
+                <td>
+                  <strong id="subtotal-{{ item.id }}">
+                    ₹{{ item.subtotal }}
+                  </strong>
+                </td>
+
+                <td>
+                  <but
+                    type="button"
+                    data-id="{{item.id}}"
+                    data-url="{% url 'removeFromCart' item.id %}"
+                    class="remove-btn"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+
+                    Remove
+                  </but>
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!--====================================
+        CART BOTTOM
+=====================================-->
+
+        <div class="cart-bottom">
+          <!-- LEFT SIDE -->
+
+           <div class="coupon-card">
+            <h3>
+              <i class="fa-solid fa-ticket"></i>
+
+              Apply Coupon
+            </h3>
+
+            <p>Have a promo code? Enter it below to get exciting discounts.</p>
+
+            <form action="#" method="POST">
+              {% csrf_token %}
+
+              <div class="coupon-box">
+                <input
+                  type="text"
+                  name="coupon"
+                  placeholder="Enter Coupon Code"
+                />
+
+                <button type="submit">Apply</button>
+              </div>
+            </form>
+
+            <a href="{% url 'home' %}" class="continue-btn">
+              <i class="fa-solid fa-arrow-left"></i>
+
+              Continue Shopping
+            </a>
+          </div>
+
+          <!-- RIGHT SIDE -->
+
+          <div class="summary-card">
+            <h2>Cart Summary</h2>
+
+            <div class="summary-row">
+              <span> Subtotal </span>
+
+              <strong id="subtotal-{{ item.id }}"> ₹{{ total }} </strong>
+            </div>
+
+            <div class="summary-row">
+              <span> Shipping </span>
+
+              <strong class="free"> FREE </strong>
+            </div>
+
+            <div class="summary-row">
+              <span> Tax </span>
+
+              <strong> ₹0 </strong>
+            </div>
+
+            <hr />
+
+            <div class="summary-total">
+              <span> Total </span>
+
+              <h3 id="cart-total">₹{{ total }}</h3>
+            </div>
+
+            <a href="{% url 'checkout' %}" class="checkout-btn">
+              <i class="fa-solid fa-credit-card"></i>
+
+              Proceed to Checkout
+            </a>
+          </div>
+        </div>
+        {% else %}
+
+        <!--====================================
+            EMPTY CART
+=====================================-->
+
+        <div class="empty-cart">
+          <div class="empty-icon">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </div>
+
+          <h2>Your Cart is Empty</h2>
+
+          <p>
+            Looks like you haven't added anything to your cart yet. Explore our
+            latest collections and find something you'll love.
+          </p>
+
+          <div class="empty-features">
+            <div class="feature">
+              <i class="fa-solid fa-truck-fast"></i>
+
+              <span>Free Shipping</span>
+            </div>
+
+            <div class="feature">
+              <i class="fa-solid fa-shield-halved"></i>
+
+              <span>Secure Payment</span>
+            </div>
+
+            <div class="feature">
+              <i class="fa-solid fa-rotate-left"></i>
+
+              <span>Easy Returns</span>
+            </div>
+          </div>
+
+          <a href="{% url 'home' %}" class="shop-btn">
+            <i class="fa-solid fa-bag-shopping"></i>
+
+            Start Shopping
+          </a>
+        </div>
+
+        {% endif %}
+      </div>
+    </section>
+
+    <!--====================================
+            FOOTER
+=====================================-->
+
+    <footer class="cart-footer">
+      <div class="footer-content">
+        <p>© 2026 <strong>ShopKart</strong>. All Rights Reserved.</p>
+
+        <div class="footer-icons">
+          <i class="fa-brands fa-cc-visa"></i>
+
+          <i class="fa-brands fa-cc-mastercard"></i>
+
+          <i class="fa-brands fa-cc-paypal"></i>
+
+          <i class="fa-brands fa-google-pay"></i>
+        </div>
+      </div>
+    </footer>
+    <script>
+
+      $(".decreaseBtn").click(function(){
+        let btn = $(this);
+        let url = btn.data("url");
+        let id = btn.data("id");
+        let row = btn.closest("tr");
+        $.ajax({
+          url: url,
+          method: "GET",
+          
+          success: function(response) {
+
+            if (response.quantity === 0) {
+              row.fadeOut(300, function () {
+                $(this).remove();
+
+                if ($("tbody tr").length === 0) {
+                  location.reload();
+                }
+              });
+            }
+            $("#qty-" + id).text(response.quantity);
+            $("#subtotal-" + id).text("₹" + response.subtotal);
+            $("#cart-total").text("₹" + response.total);
+          },
+          error: function(xhr, status, error) {
+            console.error("Error decreasing quantity:", error);
+          }
+        });
+      })
+
+      $(".increaseBtn").click(function(){
+        let btn = $(this);
+        let url = btn.data("url");
+        let id = btn.data("id");
+        $.ajax({
+          url: url,
+          method: "GET",
+          
+          success: function(response) {
+
+            $("#qty-" + id).text(response.quantity);
+            $("#subtotal-" + id).text("₹" + response.subtotal);
+            $("#cart-total").text("₹" + response.total);
+          },
+          error: function(xhr, status, error) {
+            console.error("Error decreasing quantity:", error);
+          }
+        });
+      })
+
+      $(".remove-btn").click(function(){
+        let btn = $(this);
+        let url = btn.data("url");
+        let id = btn.data("id");
+        let row = btn.closest("tr");
+        $.ajax({
+          url: url,
+          method: "GET",
+          
+          success: function(response) {
+            btn.closest("tr").fadeOut(300, function () {
+              $(this).remove();
+
+              if ($("tbody tr").length === 0) {
+                location.reload();
+              }
+            });
+          
+            $("#qty-" + id).text(response.quantity);
+            $("#subtotal-" + id).text("₹" + response.subtotal);
+            $("#cart-total").text("₹" + response.total);
+          },
+          error: function(xhr, status, error) {
+            console.error("Error decreasing quantity:", error);
+          }
+        });
+      })
+            
+    </script>
+  </body>
+</html>

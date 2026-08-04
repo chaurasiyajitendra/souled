@@ -1,0 +1,295 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    {% include "navbar.html" %}
+
+    <!-- ===========================
+            PROFILE HEADER
+    ============================ -->
+
+    <section class="profile-header">
+      <div class="profile-cover"></div>
+
+      <div class="profile-card">
+        <div class="profile-left">
+          <div class="profile-image">
+            {% if user.profile %}
+            <img src="{{ user.profile.url }}" alt="{{ user.name }}" />
+            {% else %}
+            <img src="{% static 'images/user.png' %}" alt="User" />
+            {% endif %}
+          </div>
+
+          <div class="profile-info">
+            <h1>{{ user.name }}</h1>
+
+            <span>@{{ user.username }}</span>
+
+            <p>
+              <i class="fa-solid fa-envelope"></i>
+              {{ user.email }}
+            </p>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <a href="/edit-profile/" class="edit-btn">
+            <i class="fa-solid fa-user-pen"></i>
+            Edit Profile
+          </a>
+
+          <a href="/change-password/" class="password-btn">
+            <i class="fa-solid fa-lock"></i>
+            Change Password
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===========================
+            STATS
+    ============================ -->
+
+    <section class="profile-stats">
+      <div class="stat-card">
+        <i class="fa-solid fa-box"></i>
+
+        <h2>12</h2>
+
+        <p>Total Orders</p>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-heart"></i>
+
+        <h2>8</h2>
+
+        <p>Wishlist</p>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <h2>3</h2>
+
+        <p>Cart Items</p>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-star"></i>
+
+        <h2>5</h2>
+
+        <p>Reviews</p>
+      </div>
+    </section>
+
+    <!-- ===========================
+            PROFILE CONTENT
+    ============================ -->
+
+    <section class="profile-content">
+      <div class="profile-main">
+        <!-- ===========================
+                    PERSONAL INFO
+            ============================ -->
+
+        <div class="profile-box">
+          <div class="box-title">
+            <h2>Personal Information</h2>
+            <i class="fa-solid fa-user"></i>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span>Full Name</span>
+              <h4>{{ user.name }}</h4>
+            </div>
+
+            <div class="info-item">
+              <span>Username</span>
+              <h4>@{{ user.username }}</h4>
+            </div>
+
+            <div class="info-item">
+              <span>Email Address</span>
+              <h4>{{ user.email }}</h4>
+            </div>
+
+            <div class="info-item">
+              <span>Phone Number</span>
+              <h4>
+                {% if user.phone %} {{ user.phone }} {% else %} Not Added {%endif %}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===========================
+                    ADDRESS
+            ============================ -->
+
+        <div class="profile-box">
+          <div class="box-title">
+            <h2>Default Address</h2>
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+
+          <div class="address-box">
+            {% if user.address %}
+
+            <p>{{ user.address }}</p>
+
+            {% else %}
+
+            <p>No address has been added yet.</p>
+
+            {% endif %}
+
+            <a href="/edit-profile/" class="small-btn">
+              <i class="fa-solid fa-pen"></i>
+              Update Address
+            </a>
+          </div>
+        </div>
+
+        <!-- ===========================
+                    ACCOUNT DETAILS
+            ============================ -->
+
+        <div class="profile-box">
+          <div class="box-title">
+            <h2>Account Details</h2>
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span>Member Since</span>
+              <h4>{{ user.createAt|date:"d M Y" }}</h4>
+            </div>
+
+            <div class="info-item">
+              <span>Account Status</span>
+              <h4 class="active-status">Active</h4>
+            </div>
+
+            <div class="info-item">
+              <span>Last Login</span>
+              <h4>{{ user.loginAt|date:"d M Y" }}</h4>
+            </div>
+
+            <div class="info-item">
+              <span>Total Orders</span>
+              <h4>12 Orders</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===========================
+                SIDEBAR
+        ============================ -->
+
+      <div class="profile-sidebar">
+        <!-- ===========================
+                    QUICK ACTIONS
+            ============================ -->
+
+        <div class="sidebar-card">
+          <h3>Quick Actions</h3>
+
+          <a href="/orders/">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+          </a>
+
+          <a href="/wishlist/">
+            <i class="fa-solid fa-heart"></i>
+            Wishlist
+          </a>
+
+          <a href="/cart/">
+            <i class="fa-solid fa-cart-shopping"></i>
+            Shopping Cart
+          </a>
+
+          <a href="/contact/">
+            <i class="fa-solid fa-headset"></i>
+            Help & Support
+          </a>
+        </div>
+
+        <!-- ===========================
+                    RECENT ORDER
+            ============================ -->
+
+        <div class="sidebar-card">
+          <h3>Latest Order</h3>
+
+          <div class="recent-order">
+            <div class="order-icon">
+              <i class="fa-solid fa-box"></i>
+            </div>
+
+            <div>
+              <h4>Wireless Headphones</h4>
+
+              <span>Delivered Successfully</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===========================
+                    ACCOUNT STATUS
+            ============================ -->
+
+        <div class="sidebar-card">
+          <h3>Account Status</h3>
+
+          <div class="status-item">
+            <span>Email Verified</span>
+
+            <i class="fa-solid fa-circle-check success"></i>
+          </div>
+
+          <div class="status-item">
+            <span>Profile Completed</span>
+
+            <strong>80%</strong>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- ===========================
+                    LOGOUT
+            ============================ -->
+
+        <div class="sidebar-card">
+          <a href="/logout/" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+          </a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

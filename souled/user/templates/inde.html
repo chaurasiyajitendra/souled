@@ -1,0 +1,474 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <!-- =========================
+        HERO SECTION
+========================= -->
+
+    <section class="hero">
+      <div class="hero-left">
+        <span class="hero-tag"> 🔥 New Collection 2026 </span>
+
+        <h1>
+          Upgrade Your
+          <span>Style</span>
+          <br />
+          With ShopKart
+        </h1>
+
+        <p>
+          Discover premium fashion, electronics, shoes and accessories at
+          unbeatable prices. Quality products, secure payments and fast delivery
+          all over India.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="/products/" class="btn-primary">
+            Shop Now
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+
+          <a href="/about/" class="btn-secondary"> Explore </a>
+        </div>
+
+        <div class="hero-stats">
+          <div>
+            <h2>15K+</h2>
+            <span>Happy Customers</span>
+          </div>
+
+          <div>
+            <h2>2500+</h2>
+            <span>Products</span>
+          </div>
+
+          <div>
+            <h2>500+</h2>
+            <span>Brands</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="circle circle1"></div>
+        <div class="circle circle2"></div>
+
+        <img src="{% static 'images/banner.png' %}" alt="Banner" />
+      </div>
+    </section>
+
+    <!-- =========================
+      SHOP BY CATEGORY
+========================= -->
+
+    <section class="home-categories">
+      <div class="section-title">
+        <span>Categories</span>
+
+        <h2>Shop By Category</h2>
+
+        <p>Find everything you need from our premium collections.</p>
+      </div>
+
+      <div class="category-grid">
+        {% for category in categories %}
+
+        <a href="/{{ category.slug }}/" class="category-card">
+          <div class="category-icon">
+            {% if category.name|lower == "fashion" %}
+            <i class="fa-solid fa-shirt"></i>
+
+            {% elif category.name|lower == "electronics" %}
+            <i class="fa-solid fa-mobile-screen-button"></i>
+
+            {% elif category.name|lower == "beauty" %}
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            {% elif category.name|lower == "furniture" %}
+            <i class="fa-solid fa-couch"></i>
+
+            {% elif category.name|lower == "sports" %}
+            <i class="fa-solid fa-football"></i>
+
+            {% else %}
+            <i class="fa-solid fa-store"></i>
+
+            {% endif %}
+          </div>
+
+          <h3>{{ category.name }}</h3>
+
+          <p>Explore Collection</p>
+        </a>
+
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- =========================
+      TRENDING PRODUCTS
+========================= -->
+
+    <section class="trending">
+      <div class="section-title">
+        <span>Popular</span>
+
+        <h2>Trending Products</h2>
+
+        <p>Best selling products selected for you.</p>
+      </div>
+
+      <div class="product-grid">
+        {% for product in trending_products %}
+
+        <div class="product-card">
+          <span class="sale-badge"> New </span>
+
+          <a href="/product/{{ product.id }}/">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="" />
+            {% else %}
+            <img src="https://placehold.co/300x300" />
+            {% endif %}
+          </a>
+
+          <div class="product-content">
+            <h3>{{ product.name }}</h3>
+
+            <div class="stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+            </div>
+
+            <h2>₹{{ product.price }}</h2>
+
+            <a href="/product/{{ product.id }}/" class="view-btn">
+              View Details
+            </a>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </section>
+    <!-- =========================
+        OFFER BANNER
+========================= -->
+
+    <section class="offer-section">
+      <div class="offer-content">
+        <span class="offer-tag"> LIMITED TIME OFFER </span>
+
+        <h2>Summer Mega Sale</h2>
+
+        <h1>
+          Up To
+          <span>70% OFF</span>
+        </h1>
+
+        <p>
+          Fashion, Electronics, Shoes, Watches and much more. Grab your
+          favourite products before the offer ends.
+        </p>
+
+        <a href="/products/" class="offer-btn">
+          Shop Collection
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="offer-image">
+        <img src="{% static 'images/offer.png' %}" alt="Offer" />
+      </div>
+    </section>
+
+    <!-- =========================
+        WHY CHOOSE US
+========================= -->
+
+    <section class="features">
+      <div class="section-title">
+        <span>Why ShopKart</span>
+
+        <h2>Why Choose Us</h2>
+
+        <p>
+          We provide the best shopping experience with premium quality service.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+
+          <h3>Fast Delivery</h3>
+
+          <p>Fast and secure delivery across India.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <h3>Secure Payment</h3>
+
+          <p>100% safe payment with trusted gateways.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-rotate-left"></i>
+          </div>
+
+          <h3>Easy Returns</h3>
+
+          <p>Hassle free return policy on eligible products.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+
+          <h3>24/7 Support</h3>
+
+          <p>Our team is always ready to help you.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+        FEATURED BRANDS
+========================= -->
+
+    <section class="brands">
+      <div class="section-title">
+        <span>Top Brands</span>
+
+        <h2>Shop By Brand</h2>
+      </div>
+
+      <div class="brand-grid">
+        <div class="brand-card">Nike</div>
+
+        <div class="brand-card">Adidas</div>
+
+        <div class="brand-card">Puma</div>
+
+        <div class="brand-card">Apple</div>
+
+        <div class="brand-card">Samsung</div>
+
+        <div class="brand-card">Sony</div>
+      </div>
+    </section>
+    <!-- =========================
+        LATEST PRODUCTS
+========================= -->
+
+    <section class="latest-products">
+      <div class="section-title">
+        <span>New Arrival</span>
+
+        <h2>Latest Products</h2>
+
+        <p>Fresh arrivals picked specially for you.</p>
+      </div>
+
+      <div class="product-grid">
+        {% for product in trending_products %}
+
+        <div class="product-card">
+          <span class="sale-badge">New</span>
+
+          <a href="/product/{{ product.id }}/">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+            {% else %}
+            <img src="https://placehold.co/350x350" alt="" />
+            {% endif %}
+          </a>
+
+          <div class="product-content">
+            <h3>{{ product.name }}</h3>
+
+            <div class="stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+            </div>
+
+            <h2>₹{{ product.price }}</h2>
+
+            <a href="/product/{{ product.id }}/" class="view-btn">
+              View Details
+            </a>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- =========================
+        TESTIMONIALS
+========================= -->
+
+    <section class="testimonials">
+      <div class="section-title">
+        <span>Reviews</span>
+
+        <h2>What Our Customers Say</h2>
+      </div>
+
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <i class="fa-solid fa-quote-left quote"></i>
+
+          <p>
+            Amazing quality products with super fast delivery. Definitely my
+            favourite shopping website.
+          </p>
+
+          <h4>Rahul Sharma</h4>
+
+          <span>Verified Buyer</span>
+        </div>
+
+        <div class="testimonial-card">
+          <i class="fa-solid fa-quote-left quote"></i>
+
+          <p>
+            Premium quality, secure payment and very smooth shopping experience.
+          </p>
+
+          <h4>Priya Patel</h4>
+
+          <span>Verified Buyer</span>
+        </div>
+
+        <div class="testimonial-card">
+          <i class="fa-solid fa-quote-left quote"></i>
+
+          <p>
+            Best prices with beautiful product collection. Highly recommended.
+          </p>
+
+          <h4>Aryan Singh</h4>
+
+          <span>Verified Buyer</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+        NEWSLETTER
+========================= -->
+
+    <section class="newsletter">
+      <div class="newsletter-content">
+        <h2>Subscribe To Our Newsletter</h2>
+
+        <p>Get updates about new arrivals, offers and exclusive discounts.</p>
+
+        <form>
+          <input type="email" placeholder="Enter your email address" />
+
+          <button>Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- =========================
+            FOOTER
+========================= -->
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-box">
+          <h2>ShopKart</h2>
+
+          <p>
+            Premium shopping destination for fashion, electronics and lifestyle
+            products.
+          </p>
+
+          <div class="social">
+            <a href="#">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+
+            <a href="#">
+              <i class="fab fa-instagram"></i>
+            </a>
+
+            <a href="#">
+              <i class="fab fa-twitter"></i>
+            </a>
+
+            <a href="#">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-box">
+          <h3>Quick Links</h3>
+
+          <a href="/">Home</a>
+
+          <a href="/products/">Products</a>
+
+          <a href="/about/">About</a>
+
+          <a href="/contact/">Contact</a>
+        </div>
+
+        <div class="footer-box">
+          <h3>Categories</h3>
+
+          {% for category in categories %}
+
+          <a href="/{{ category.slug }}/"> {{ category.name }} </a>
+
+          {% endfor %}
+        </div>
+
+        <div class="footer-box">
+          <h3>Contact</h3>
+
+          <p>Ahmedabad, Gujarat</p>
+
+          <p>support@shopkart.com</p>
+
+          <p>+91 98765 43210</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">© 2026 ShopKart. All Rights Reserved.</div>
+    </footer>
+  </body>
+</html>
