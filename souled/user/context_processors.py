@@ -14,4 +14,5 @@ def global_data(request):
         ),
         "user" :user,
         "is_login": "username" in request.session,
+
     }

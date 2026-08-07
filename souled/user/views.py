@@ -1,8 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import User, Product, Category, SubCategory, ChildCategory,Cart,Wishlist
+from .models import User, Product, Category, SubCategory, ChildCategory,Cart,Wishlist,Order
 from django.contrib.auth.hashers import make_password, check_password
+from decimal import Decimal
+from django.contrib import messages
 from django.utils import timezone
 from django.http import JsonResponse
+from django.db.models import Q
 
 
 # Create your views here.
@@ -253,11 +256,16 @@ def productDetail(request, id):
         childCategory=product.childCategory
     ).exclude(id=product.id)[:4]
 
+    inWhishlist = Wishlist.objects.filter(
+        user_id=request.session.get("user_id"),
+        product=product
+    ).exists()
 
     return render(request, "productDetail.html", {
         "product": product,
         "related_products": related_products,
         "child_category": child_category,
+        "inWishlist": inWhishlist 
     })
 
 
@@ -300,13 +308,12 @@ def removeWishlist(request, id):
 
     item = get_object_or_404(
         Wishlist,
-        id=id,
+        Q(product_id=id) | Q(id=id),
         user=user
     )
 
-    item.delete()
-
-    return redirect("/wishlist/")
+    item.delete()   
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
 def addToCart(request, product_id):
@@ -407,27 +414,26 @@ def removeFromCart(request, productId):
     return JsonResponse({
         'status': 'deleted',
         'total': total,
-        'cart_count': cart_item.count()
     })
 
 def checkout(request):
-
     if "user_id" not in request.session:
         return redirect("/login/")
-    userId = request.session["user_id"]
-    user = User.objects.get(id=userId)
 
+    user = User.objects.get(id=request.session["user_id"])
     cart_items = Cart.objects.filter(user=user)
 
+    if not cart_items.exists():
+        return redirect("/cart/")
+
+    # Subtotal Decimal formatting
     subtotal = sum(item.product.price * item.quantity for item in cart_items)
-
-    shipping = 0
-    discount = 0
-
-    total = subtotal + shipping - discount
+    
+    # Int ki jagah Decimal use karein
+    shipping = Decimal('0.00')
+    discount = Decimal('0.00')
 
     if request.method == "POST":
-
         name = request.POST.get("name")
         phone = request.POST.get("phone")
         email = request.POST.get("email")
@@ -439,13 +445,34 @@ def checkout(request):
         shipping_method = request.POST.get("shipping")
         payment_method = request.POST.get("payment")
 
+        # Decimal format me define karein
         if shipping_method == "express":
-            shipping = 99
-            total += 99
+            shipping = Decimal('99.00')
 
-        # Yaha baad me Order create karenge
+        # Total Calculation using Decimal
+        total = subtotal + shipping - discount
+        
+        # Per item shipping split (Decimal)
+        item_shipping = shipping / Decimal(cart_items.count())
+
+        # Save Orders
+        for item in cart_items:
+            item_total = (item.product.price * item.quantity) + item_shipping
+            
+            Order.objects.create(
+                user=user,
+                product=item.product,
+                quantity=item.quantity,
+                total_price=item_total
+            )
+
+        # Clear Cart
+        cart_items.delete()
 
         return redirect("/order-success/")
+
+    # Initial GET Request calculation
+    total = subtotal + shipping - discount
 
     context = {
         "user": user,
@@ -457,3 +484,15 @@ def checkout(request):
     }
 
     return render(request, "checkout.html", context)
+
+def orders(req):
+    if "user_id" not in req.session:
+        return redirect("/login/")
+
+    userId = req.session["user_id"]
+    user = User.objects.get(id=userId)
+
+    # Database se user ke orders fetch karke template ko bhejen
+    user_orders = Order.objects.filter(user=user).order_by("-created_at")
+
+    return render(req, "myOrder.html", {"orders": user_orders})

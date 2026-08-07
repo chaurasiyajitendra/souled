@@ -1,0 +1,163 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/admin/users.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      {% include "sidebar.html" %}
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="page-title">
+            <span class="eyebrow">Director Panel</span>
+            <h1>Manage Users</h1>
+            <p>View, edit and manage every registered user from one place.</p>
+          </div>
+
+          <div class="top-actions">
+            <label class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="searchUser" placeholder="Search users..." />
+            </label>
+
+            <div class="admin-profile">
+              <img src="https://i.pravatar.cc/100?img=12" alt="Admin" />
+              <div>
+                <h4>Admin</h4>
+                <span>Administrator</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section class="hero-panel compact">
+          <div>
+            <p class="hero-label">Members overview</p>
+            <h2>Stay on top of active profiles and recent signups.</h2>
+          </div>
+          <div class="hero-badges">
+            <span><i class="fa-solid fa-shield-halved"></i> Secure access</span>
+            <span><i class="fa-solid fa-user-plus"></i> New members</span>
+          </div>
+        </section>
+
+        <section class="cards">
+          <div class="card users">
+            <i class="fa-solid fa-users"></i>
+            <div>
+              <h2>{{ users.count }}</h2>
+              <p>Total Users</p>
+            </div>
+          </div>
+
+          <div class="card products">
+            <i class="fa-solid fa-user-check"></i>
+            <div>
+              <h2>{{ active_users }}</h2>
+              <p>Active Users</p>
+            </div>
+          </div>
+
+          <div class="card orders">
+            <i class="fa-solid fa-user-plus"></i>
+            <div>
+              <h2>{{ today_users }}</h2>
+              <p>Joined Today</p>
+            </div>
+          </div>
+
+          <div class="card revenue">
+            <i class="fa-solid fa-user-clock"></i>
+            <div>
+              <h2>{{ online_users }}</h2>
+              <p>Online Users</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="table-card">
+          <div class="card-header">
+            <h2>Registered Users</h2>
+            <a href="#">Export</a>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Joined</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <div class="user-info">
+                    {% if user.profile %}
+                    <img src="{{ user.profile.url }}" alt="{{ user.name }}" />
+                    {% else %}
+                    <img src="https://placehold.co/60x60" alt="User" />
+                    {% endif %}
+                    <div>
+                      <h4>{{ user.name }}</h4>
+                      <span>ID : {{ user.id }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.createAt|date:"d M Y" }}</td>
+                <td>
+                  <div class="action-btns">
+                    <a href="" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
+                    <a href="" class="delete-btn" onclick="return confirm('Delete this user?');"><i class="fa-solid fa-trash"></i></a>
+                  </div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="7" class="empty-data">
+                  <i class="fa-solid fa-users-slash"></i>
+                  <p>No users found.</p>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <footer class="dashboard-footer">
+          <p>© 2026 <strong>ShopKart Admin</strong>. All rights reserved.</p>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      const searchInput = document.getElementById("searchUser");
+      if (searchInput) {
+        searchInput.addEventListener("keyup", function () {
+          const value = this.value.toLowerCase();
+          const rows = document.querySelectorAll("tbody tr");
+          rows.forEach(function (row) {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.indexOf(value) > -1 ? "" : "none";
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

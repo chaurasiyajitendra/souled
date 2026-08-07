@@ -291,83 +291,88 @@
     </footer>
     <script>
 
-      $(".decreaseBtn").click(function(){
-        let btn = $(this);
-        let url = btn.data("url");
-        let id = btn.data("id");
-        let row = btn.closest("tr");
-        $.ajax({
-          url: url,
-          method: "GET",
-          
-          success: function(response) {
+      // $(document).ready(function(){
 
-            if (response.quantity === 0) {
-              row.fadeOut(300, function () {
-                $(this).remove();
-
-                if ($("tbody tr").length === 0) {
-                  location.reload();
-                }
-              });
-            }
-            $("#qty-" + id).text(response.quantity);
-            $("#subtotal-" + id).text("₹" + response.subtotal);
-            $("#cart-total").text("₹" + response.total);
-          },
-          error: function(xhr, status, error) {
-            console.error("Error decreasing quantity:", error);
-          }
-        });
-      })
-
-      $(".increaseBtn").click(function(){
-        let btn = $(this);
-        let url = btn.data("url");
-        let id = btn.data("id");
-        $.ajax({
-          url: url,
-          method: "GET",
-          
-          success: function(response) {
-
-            $("#qty-" + id).text(response.quantity);
-            $("#subtotal-" + id).text("₹" + response.subtotal);
-            $("#cart-total").text("₹" + response.total);
-          },
-          error: function(xhr, status, error) {
-            console.error("Error decreasing quantity:", error);
-          }
-        });
-      })
-
-      $(".remove-btn").click(function(){
-        let btn = $(this);
-        let url = btn.data("url");
-        let id = btn.data("id");
-        let row = btn.closest("tr");
-        $.ajax({
-          url: url,
-          method: "GET",
-          
-          success: function(response) {
-            btn.closest("tr").fadeOut(300, function () {
-              $(this).remove();
-
-              if ($("tbody tr").length === 0) {
-                location.reload();
+        $(".decreaseBtn").click(function(){
+          let btn = $(this);
+          let url = btn.data("url");
+          let id = btn.data("id");
+          let row = btn.closest("tr");
+          $.ajax({
+            url: url,
+            method: "GET",
+            
+            success: function(response) {
+  
+              if (response.quantity === 0) {
+                row.fadeOut(300, function () {
+                  $(this).remove();
+  
+                  if ($("tbody tr").length === 0) {
+                    location.reload();
+                  }
+                });
               }
-            });
-          
-            $("#qty-" + id).text(response.quantity);
-            $("#subtotal-" + id).text("₹" + response.subtotal);
-            $("#cart-total").text("₹" + response.total);
-          },
-          error: function(xhr, status, error) {
-            console.error("Error decreasing quantity:", error);
-          }
-        });
-      })
+              $("#qty-" + id).text(response.quantity);
+              $("#subtotal-" + id).text("₹" + response.subtotal);
+              $("#cart-total").text("₹" + response.total);
+            },
+            error: function(xhr, status, error) {
+              console.error("Error decreasing quantity:", error);
+            }
+          });
+        })
+  
+        $(".increaseBtn").click(function(){
+          let btn = $(this);
+          let url = btn.data("url");
+          let id = btn.data("id");
+          $.ajax({
+            url: url,
+            method: "GET",
+            
+            success: function(response) {
+  
+              $("#qty-" + id).text(response.quantity);
+              $("#subtotal-" + id).text("₹" + response.subtotal);
+              $("#cart-total").text("₹" + response.total);
+            },
+            error: function(xhr, status, error) {
+              console.error("Error decreasing quantity:", error);
+            }
+          });
+        })
+  
+        $(".remove-btn").click(function(){
+          let btn = $(this);
+          let url = btn.data("url");
+          let id = btn.data("id");
+          let row = btn.closest("tr");
+          $.ajax({
+            url: url,
+            method: "GET",
+            
+            success: function(response) {
+              btn.closest("tr").fadeOut(300, function () {
+                $(this).remove();
+                
+                if ($("tbody tr").length === 0) {
+                    location.reload();
+                  }
+                
+              });
+            
+              $("#qty-" + id).text(response.quantity);
+              $("#subtotal-" + id).text("₹" + response.subtotal);
+              $("#cart-total").text("₹" + response.total);
+            },
+            error: function(xhr, status, error) {
+              console.error("Error decreasing quantity:", error);
+            }
+          });
+        })
+      
+      // });
             
     </script>
   </body>

@@ -4,9 +4,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shopping Cart</title>
+    <title>Checkout</title>
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/cart.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
@@ -16,261 +17,280 @@
   <body>
     {% include "navbar.html" %}
 
-    <!-- Hidden CSRF Token for Security -->
-    {% csrf_token %}
+    <section class="checkout">
+      <div class="checkout-container">
+        <form method="POST">
+          {% csrf_token %}
 
-    <section class="cart-hero">
-      <div class="hero-content">
-        <span class="hero-tag">
-          <i class="fa-solid fa-cart-shopping"></i> Shopping Cart
-        </span>
-        <h1>Your Cart</h1>
-        <p>
-          Review your selected products before proceeding to checkout. Enjoy
-          secure shopping with ShopKart.
-        </p>
-      </div>
-    </section>
+          <!--========================
+                LEFT SIDE
+          =========================-->
+          <div class="checkout-left">
+            <div class="page-title">
+              <h1>
+                <i class="fa-solid fa-credit-card"></i> Checkout
+              </h1>
+              <p>Complete your order by filling the details below.</p>
+            </div>
 
-    <section class="cart-section">
-      <div class="cart-container">
-        {% if cart_items %}
-
-        <div class="cart-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {% for item in cart_items %}
-              <!-- Dynamic ID per row -->
-              <tr id="cart-item-row-{{ item.id }}">
-                <td>
-                  <div class="product-info">
-                    <div class="product-image">
-                      {% if item.product.image %}
-                      <img
-                        src="{{ item.product.image.url }}"
-                        alt="{{ item.product.name }}"
-                      />
-                      {% else %}
-                      <img src="https://placehold.co/120x120" alt="No Image" />
-                      {% endif %}
-                    </div>
-
-                    <div class="product-details">
-                      <h3>{{ item.product.name }}</h3>
-                      <p>{{ item.product.detail|truncatechars:70 }}</p>
-                    </div>
-                  </div>
-                </td>
-
-                <td>₹{{ item.product.price }}</td>
-
-                <td>
-                  <div class="quantity-box">
-                    <button type="button" class="qty-btn btn-decrease" data-url="{% url 'decreaseCart' item.id %}" data-item-id="{{ item.id }}">
-                      <i class="fa-solid fa-minus"></i>
-                    </button>
-
-                    <span id="qty-{{ item.id }}">{{ item.quantity }}</span>
-
-                    <button type="button" class="qty-btn btn-increase" data-url="{% url 'increaseCart' item.id %}" data-item-id="{{ item.id }}">
-                      <i class="fa-solid fa-plus"></i>
-                    </button>
-                  </div>
-                </td>
-
-                <td>
-                  <strong>₹<span id="subtotal-{{ item.id }}">{{ item.subtotal }}</span></strong>
-                </td>
-
-                <td>
-                  <button type="button" class="remove-btn btn-remove" data-url="{% url 'removeFromCart' item.id %}" data-item-id="{{ item.id }}">
-                    <i class="fa-solid fa-trash"></i> Remove
-                  </button>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="cart-bottom">
-          <!-- LEFT SIDE -->
-          <div class="coupon-card">
-            <h3><i class="fa-solid fa-ticket"></i> Apply Coupon</h3>
-            <p>Have a promo code? Enter it below to get exciting discounts.</p>
-
-            <form action="#" method="POST">
-              {% csrf_token %}
-              <div class="coupon-box">
-                <input
-                  type="text"
-                  name="coupon"
-                  placeholder="Enter Coupon Code"
-                />
-                <button type="submit">Apply</button>
+            <!--========================
+                ADDRESS CARD
+            =========================-->
+            <div class="card">
+              <div class="card-title">
+                <i class="fa-solid fa-location-dot"></i>
+                <h2>Delivery Address</h2>
               </div>
-            </form>
 
-            <a href="{% url 'home' %}" class="continue-btn">
-              <i class="fa-solid fa-arrow-left"></i> Continue Shopping
-            </a>
+              <div class="form-grid">
+                <div class="input-box">
+                  <label>Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value="{{ user.get_full_name|default:user.username }}"
+                    required
+                  />
+                </div>
+
+                <div class="input-box">
+                  <label>Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value="{{ user.phone|default:'' }}"
+                    placeholder="10-digit mobile number"
+                    required
+                  />
+                </div>
+
+                <div class="input-box">
+                  <label>Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value="{{ user.email }}"
+                    required
+                  />
+                </div>
+
+                <div class="input-box">
+                  <label>Pincode</label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    placeholder="380001"
+                    required
+                  />
+                </div>
+
+                <div class="input-box full">
+                  <label>Address</label>
+                  <!-- Tag spacing fix: Keep value directly inside without newlines -->
+                  <textarea name="address" rows="4" required>{{ user.address|default:'' }}</textarea>
+                </div>
+
+                <div class="input-box">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    name="city"
+                    placeholder="Ahmedabad"
+                    required
+                  />
+                </div>
+
+                <div class="input-box">
+                  <label>State</label>
+                  <input
+                    type="text"
+                    name="state"
+                    placeholder="Gujarat"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!--========================
+                SHIPPING METHOD
+            =========================-->
+            <div class="card">
+              <div class="card-title">
+                <i class="fa-solid fa-truck-fast"></i>
+                <h2>Shipping Method</h2>
+              </div>
+
+              <label class="option">
+                <input type="radio" name="shipping" value="free" class="shipping-radio" data-cost="0" checked />
+                <div class="option-info">
+                  <h4>Standard Delivery</h4>
+                  <p>Delivery in 3-5 Days</p>
+                </div>
+                <span class="price"> FREE </span>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="shipping" value="express" class="shipping-radio" data-cost="99" />
+                <div class="option-info">
+                  <h4>Express Delivery</h4>
+                  <p>Delivery in 1-2 Days</p>
+                </div>
+                <span class="price"> ₹99 </span>
+              </label>
+            </div>
+
+            <!--========================
+                PAYMENT METHOD
+            =========================-->
+            <div class="card">
+              <div class="card-title">
+                <i class="fa-solid fa-wallet"></i>
+                <h2>Payment Method</h2>
+              </div>
+
+              <label class="option">
+                <input type="radio" name="payment" value="cod" checked />
+                <div class="option-info">
+                  <h4>
+                    <i class="fa-solid fa-money-bill-wave"></i> Cash On Delivery
+                  </h4>
+                  <p>Pay when your order arrives.</p>
+                </div>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="payment" value="upi" />
+                <div class="option-info">
+                  <h4>
+                    <i class="fa-brands fa-google-pay"></i> UPI Payment
+                  </h4>
+                  <p>Google Pay, PhonePe, Paytm</p>
+                </div>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="payment" value="card" />
+                <div class="option-info">
+                  <h4>
+                    <i class="fa-regular fa-credit-card"></i> Credit / Debit Card
+                  </h4>
+                  <p>Visa, Mastercard, RuPay</p>
+                </div>
+              </label>
+
+              <label class="option">
+                <input type="radio" name="payment" value="netbanking" />
+                <div class="option-info">
+                  <h4>
+                    <i class="fa-solid fa-building-columns"></i> Net Banking
+                  </h4>
+                  <p>All major Indian banks supported.</p>
+                </div>
+              </label>
+            </div>
           </div>
 
-          <!-- RIGHT SIDE -->
-          <div class="summary-card">
-            <h2>Cart Summary</h2>
+          <!--========================
+                RIGHT SIDE (SUMMARY)
+          =========================-->
+          <div class="checkout-right">
+            <div class="summary-card">
+              <h2>
+                <i class="fa-solid fa-bag-shopping"></i> Order Summary
+              </h2>
 
-            <div class="summary-row">
-              <span>Subtotal</span>
-              <strong>₹<span class="cart-total-display">{{ total }}</span></strong>
+              {% for item in cart_items %}
+              <div class="summary-item">
+                {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+                {% else %}
+                <img src="https://placehold.co/80x80" alt="No Image" />
+                {% endif %}
+
+                <div class="summary-content">
+                  <h4>{{ item.product.name }}</h4>
+                  <p>Qty : {{ item.quantity }}</p>
+                </div>
+
+                <strong> ₹{{ item.subtotal }} </strong>
+              </div>
+              {% endfor %}
+
+              <hr />
+
+              <div class="coupon">
+                <input type="text" placeholder="Coupon Code" />
+                <button type="button">Apply</button>
+              </div>
+
+              <div class="price-box">
+                <div>
+                  <span>Subtotal</span>
+                  <strong> ₹{{ subtotal }} </strong>
+                </div>
+
+                <div>
+                  <span>Shipping</span>
+                  <strong id="display-shipping"> FREE </strong>
+                </div>
+
+                <div>
+                  <span>Discount</span>
+                  <strong> ₹{{ discount }} </strong>
+                </div>
+              </div>
+
+              <hr />
+
+              <div class="grand-total">
+                <span>Total</span>
+                <h1 id="display-total">₹{{ total }}</h1>
+              </div>
+
+              <button type="submit" class="checkout-btn">
+                <i class="fa-solid fa-lock"></i> Place Order
+              </button>
+
+              <div class="secure-payment">
+                <div><i class="fa-solid fa-shield-halved"></i> 100% Secure Payment</div>
+                <div><i class="fa-solid fa-truck-fast"></i> Fast Delivery</div>
+                <div><i class="fa-solid fa-rotate-left"></i> Easy Returns</div>
+              </div>
+
+              <div class="cards">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-google-pay"></i>
+                <i class="fa-brands fa-paypal"></i>
+              </div>
             </div>
-
-            <div class="summary-row">
-              <span>Shipping</span>
-              <strong class="free">FREE</strong>
-            </div>
-
-            <div class="summary-row">
-              <span>Tax</span>
-              <strong>₹0</strong>
-            </div>
-
-            <hr />
-
-            <div class="summary-total">
-              <span>Total</span>
-              <h3>₹<span class="cart-total-display">{{ total }}</span></h3>
-            </div>
-
-            <a href="" class="checkout-btn">
-              <i class="fa-solid fa-credit-card"></i> Proceed to Checkout
-            </a>
           </div>
-        </div>
-
-        {% else %}
-
-        <div class="empty-cart">
-          <div class="empty-icon">
-            <i class="fa-solid fa-cart-shopping"></i>
-          </div>
-          <h2>Your Cart is Empty</h2>
-          <p>
-            Looks like you haven't added anything to your cart yet. Explore our
-            latest collections and find something you'll love.
-          </p>
-          <div class="empty-features">
-            <div class="feature">
-              <i class="fa-solid fa-truck-fast"></i>
-              <span>Free Shipping</span>
-            </div>
-            <div class="feature">
-              <i class="fa-solid fa-shield-halved"></i>
-              <span>Secure Payment</span>
-            </div>
-            <div class="feature">
-              <i class="fa-solid fa-rotate-left"></i>
-              <span>Easy Returns</span>
-            </div>
-          </div>
-          <a href="{% url 'home' %}" class="shop-btn">
-            <i class="fa-solid fa-bag-shopping"></i> Start Shopping
-          </a>
-        </div>
-
-        {% endif %}
+        </form>
       </div>
     </section>
 
-    <footer class="cart-footer">
-      <div class="footer-content">
-        <p>© 2026 <strong>ShopKart</strong>. All Rights Reserved.</p>
-        <div class="footer-icons">
-          <i class="fa-brands fa-cc-visa"></i>
-          <i class="fa-brands fa-cc-mastercard"></i>
-          <i class="fa-brands fa-cc-paypal"></i>
-          <i class="fa-brands fa-google-pay"></i>
-        </div>
-      </div>
-    </footer>
-
-    <!-- JavaScript AJAX Handler -->
+    <!-- Optional JS for Dynamic Shipping Calculation -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        const baseSubtotal = parseFloat("{{ subtotal }}") || 0;
+        const baseDiscount = parseFloat("{{ discount }}") || 0;
+        const shippingRadios = document.querySelectorAll(".shipping-radio");
+        const shippingDisplay = document.getElementById("display-shipping");
+        const totalDisplay = document.getElementById("display-total");
 
-        // Common Handler Function
-        function handleCartAction(url, itemId) {
-          fetch(url, {
-            method: "POST",
-            headers: {
-              "X-Requested-With": "XMLHttpRequest",
-              "X-CSRFToken": csrfToken,
-              "Content-Type": "application/json"
-            }
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.status === "updated") {
-              // Update Quantity & Subtotal for item
-              document.getElementById(`qty-${itemId}`).innerText = data.quantity;
-              document.getElementById(`subtotal-${itemId}`).innerText = data.subtotal;
-            } else if (data.status === "deleted") {
-              // Fade out & remove row if item deleted
-              const row = document.getElementById(`cart-item-row-${itemId}`);
-              if (row) {
-                row.remove();
-              }
-              
-              // If table becomes empty, page reload for empty cart screen
-              const remainingRows = document.querySelectorAll("tbody tr");
-              if (remainingRows.length === 0) {
-                window.location.reload();
-              }
+        shippingRadios.forEach((radio) => {
+          radio.addEventListener("change", function () {
+            const shippingCost = parseFloat(this.getAttribute("data-cost"));
+            const finalTotal = baseSubtotal + shippingCost - baseDiscount;
+
+            if (shippingCost === 0) {
+              shippingDisplay.innerText = "FREE";
+            } else {
+              shippingDisplay.innerText = "₹" + shippingCost;
             }
 
-            // Update Total Amounts everywhere
-            document.querySelectorAll(".cart-total-display").forEach(el => {
-              el.innerText = data.total;
-            });
-          })
-          .catch(err => console.error("AJAX Error:", err));
-        }
-
-        // Event Listener for Increase
-        document.querySelectorAll(".btn-increase").forEach(btn => {
-          btn.addEventListener("click", function () {
-            const url = this.getAttribute("data-url");
-            const itemId = this.getAttribute("data-item-id");
-            handleCartAction(url, itemId);
-          });
-        });
-
-        // Event Listener for Decrease
-        document.querySelectorAll(".btn-decrease").forEach(btn => {
-          btn.addEventListener("click", function () {
-            const url = this.getAttribute("data-url");
-            const itemId = this.getAttribute("data-item-id");
-            handleCartAction(url, itemId);
-          });
-        });
-
-        // Event Listener for Remove
-        document.querySelectorAll(".btn-remove").forEach(btn => {
-          btn.addEventListener("click", function () {
-            const url = this.getAttribute("data-url");
-            const itemId = this.getAttribute("data-item-id");
-            handleCartAction(url, itemId);
+            totalDisplay.innerText = "₹" + finalTotal;
           });
         });
       });

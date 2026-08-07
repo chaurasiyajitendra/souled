@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/myOrders.css' %}">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+{% include "navbar.html" %}
+
+<!--=========================
+        HERO
+==========================-->
+
+<section class="orders-hero">
+
+    <div class="hero-content">
+
+        <span>
+            <i class="fa-solid fa-box-open"></i>
+            Order History
+        </span>
+
+        <h1>My Orders</h1>
+
+        <p>
+            Track your purchases and view your previous orders.
+        </p>
+
+    </div>
+
+</section>
+
+<!--=========================
+        ORDERS
+==========================-->
+
+<section class="orders-section">
+
+    <div class="orders-container">
+
+        {% if orders %}
+
+            {% for order in orders %}
+
+            <div class="order-card">
+
+                <div class="order-top">
+
+                    <div>
+
+                        <h3>Order #{{ order.id }}</h3>
+
+                        <p>
+                            Placed on
+                            {{ order.created_at|date:"d M Y" }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="order-products">
+
+                    <div class="product-row">
+
+                        <div class="product-left">
+
+                            {% if order.product.image %}
+
+                                <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}">
+
+                            {% else %}
+
+                                <img src="https://placehold.co/100x100">
+
+                            {% endif %}
+
+                            <div>
+
+                                <h4>{{ order.product.name }}</h4>
+
+                                <p>Quantity : {{ order.quantity }}</p>
+
+                                <span>₹{{ order.product.price }}</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="order-bottom">
+
+                    <p><strong>Customer :</strong> {{ order.full_name }}</p>
+
+                    <p><strong>Phone :</strong> {{ order.phone }}</p>
+
+                    <p><strong>Payment :</strong> {{ order.payment_method }}</p>
+
+                    <p><strong>Address :</strong> {{ order.address }}</p>
+
+                    <h3>
+
+                        Total :
+
+                        <span>₹{{ order.total_price }}</span>
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+        <!--=========================
+            EMPTY
+        ==========================-->
+
+        <div class="empty-orders">
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-box-open"></i>
+
+            </div>
+
+            <h2>No Orders Yet</h2>
+
+            <p>
+
+                You haven't placed any orders yet.
+
+            </p>
+
+            <a href="{% url 'home' %}" class="shop-btn">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+                Continue Shopping
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+<!--=========================
+        FOOTER
+==========================-->
+
+<footer class="orders-footer">
+
+    <div class="footer-content">
+
+        <p>
+
+            © 2026 <strong>ShopKart</strong>. All Rights Reserved.
+
+        </p>
+
+        <div class="footer-icons">
+
+            <i class="fa-brands fa-facebook-f"></i>
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-x-twitter"></i>
+            <i class="fa-brands fa-linkedin-in"></i>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

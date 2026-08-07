@@ -612,17 +612,15 @@ body {
 }
 
 .wishlist-icon{
-    position:absolute;
-    top:36%;
-    right:37%;
     display:inline-flex;
     vertical-align:middle;
+    margin-bottom: 1.3rem;
 }
 
 .wishlist-icon a{
 
-    width:32px;
-    height:32px;
+    width:42px;
+    height:42px;
 
     border-radius:50%;
 
@@ -644,7 +642,7 @@ body {
 
 .wishlist-icon a i{
 
-    font-size:18px;
+    font-size:20px;
 
     color:#ef4444;
 

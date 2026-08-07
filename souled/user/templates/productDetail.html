@@ -55,13 +55,23 @@
 
       <div class="product-info">
         <span class="category-badge"> {{product.category.name}} </span>
-
-        <h1>{{product.name}}</h1>
-        <span class="wishlist-icon">
-          <a href="{% url 'addToWishlist' product.id %}">
-            <i class="fa-regular fa-heart" style="color: rgb(255, 138, 138)"></i>
-          </a>
-        </span>
+        <div style="display: flex; align-items: center;  gap: 10px;">
+  
+          <h1>{{product.name}}</h1>
+          {% if inWishlist %}
+            <span class="wishlist-icon">
+              <a href="{% url 'removeWishlist' product.id %}">
+                <i class="fa-solid fa-heart" style="color: rgb(255, 138, 138)"></i>
+              </a>
+            </span>
+          {% else %}
+            <span class="wishlist-icon">
+              <a href="{% url 'addToWishlist' product.id %}">
+                <i class="fa-regular fa-heart" style="color: rgb(255, 138, 138)"></i>
+              </a>
+            </span>
+          {% endif %}
+        </div>
         <div class="rating">
           <i class="fa-solid fa-star"></i>
           <i class="fa-solid fa-star"></i>

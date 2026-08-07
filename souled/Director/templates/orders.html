@@ -1,0 +1,171 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Orders</title>
+    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/admin/orders.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      {% include "sidebar.html" %}
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="page-title">
+            <span class="eyebrow">Director Panel</span>
+            <h1>Manage Orders</h1>
+            <p>Track every customer order from a polished operations hub.</p>
+          </div>
+
+          <div class="top-actions">
+            <label class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="searchOrder" placeholder="Search orders..." />
+            </label>
+          </div>
+        </header>
+
+        <section class="hero-panel compact">
+          <div>
+            <p class="hero-label">Orders overview</p>
+            <h2>Stay ahead of pending shipments and completed deliveries.</h2>
+          </div>
+          <div class="hero-badges">
+            <span><i class="fa-solid fa-truck-fast"></i> Fast dispatch</span>
+            <span><i class="fa-solid fa-circle-check"></i> Order tracking</span>
+          </div>
+        </section>
+
+        <section class="cards">
+          <div class="card orders">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <div>
+              <h2>{{ total_orders }}</h2>
+              <p>Total Orders</p>
+            </div>
+          </div>
+
+          <div class="card today">
+            <i class="fa-solid fa-calendar-day"></i>
+            <div>
+              <h2>{{ today_orders }}</h2>
+              <p>Today's Orders</p>
+            </div>
+          </div>
+
+          <div class="card pending">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+              <h2>{{ pending_orders }}</h2>
+              <p>Pending</p>
+            </div>
+          </div>
+
+          <div class="card delivered">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+              <h2>{{ delivered_orders }}</h2>
+              <p>Delivered</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="table-card">
+          <div class="card-header">
+            <h2>All Orders</h2>
+            <a href="#">Export</a>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <div class="customer-info">
+                    {% if order.user.profile %}
+                    <img src="{{ order.user.profile.url }}" alt="{{ order.user.name }}" />
+                    {% else %}
+                    <img src="https://placehold.co/60x60" alt="User" />
+                    {% endif %}
+                    <div>
+                      <h4>{{ order.user.name }}</h4>
+                      <span>{{ order.user.email }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="product-info">
+                    {% if order.product.image %}
+                    <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" />
+                    {% else %}
+                    <img src="https://placehold.co/60x60" alt="Product" />
+                    {% endif %}
+                    <div>
+                      <h4>{{ order.product.name }}</h4>
+                      <span>{{ order.product.category.name }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ order.quantity }}</td>
+                <td><strong>₹{{ order.total_price }}</strong></td>
+                <td><span class="payment">{{ order.payment_method }}</span></td>
+                <td>{{ order.created_at|date:"d M Y" }}</td>
+                <td><span class="status {{ order.status|lower }}">{{ order.status }}</span></td>
+                <td>
+                  <div class="action-btns">
+                    <a href="#" class="view"><i class="fa-solid fa-eye"></i></a>
+                    <a href="#" class="edit"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="delete" onclick="return confirm('Delete this order?');"><i class="fa-solid fa-trash"></i></a>
+                  </div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="9">
+                  <div class="empty-table">
+                    <i class="fa-solid fa-box-open"></i>
+                    <h3>No Orders Found</h3>
+                    <p>No customer orders available.</p>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const searchInput = document.getElementById("searchOrder");
+      if (searchInput) {
+        searchInput.addEventListener("keyup", function () {
+          const value = this.value.toLowerCase();
+          const rows = document.querySelectorAll("tbody tr");
+          rows.forEach(function (row) {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.indexOf(value) > -1 ? "" : "none";
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

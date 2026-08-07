@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin/products.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+</head>
+<body>
+<div class="dashboard">
+    {% include "sidebar.html" %}
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="page-title">
+                <span class="eyebrow">Director Panel</span>
+                <h1>Manage Products</h1>
+                <p>Manage every product from one clean and modern workspace.</p>
+            </div>
+
+            <div class="top-actions">
+                <label class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchProduct" placeholder="Search products...">
+                </label>
+
+                <a href="" class="add-product-btn">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Product
+                </a>
+            </div>
+        </header>
+
+        <section class="hero-panel compact">
+            <div>
+                <p class="hero-label">Inventory overview</p>
+                <h2>Keep stock, pricing, and product visibility in sync.</h2>
+            </div>
+            <div class="hero-badges">
+                <span><i class="fa-solid fa-layer-group"></i> Organized catalog</span>
+                <span><i class="fa-solid fa-boxes-stacked"></i> Live inventory</span>
+            </div>
+        </section>
+
+        <section class="cards">
+            <div class="card products">
+                <i class="fa-solid fa-box"></i>
+                <div>
+                    <h2>{{ total_products }}</h2>
+                    <p>Total Products</p>
+                </div>
+            </div>
+
+            <div class="card today">
+                <i class="fa-solid fa-calendar-plus"></i>
+                <div>
+                    <h2>{{ today_products }}</h2>
+                    <p>Added Today</p>
+                </div>
+            </div>
+
+            <div class="card stock">
+                <i class="fa-solid fa-check"></i>
+                <div>
+                    <h2>{{ in_stock }}</h2>
+                    <p>In Stock</p>
+                </div>
+            </div>
+
+            <div class="card out">
+                <i class="fa-solid fa-xmark"></i>
+                <div>
+                    <h2>{{ out_of_stock }}</h2>
+                    <p>Out Of Stock</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="table-card">
+            <div class="card-header">
+                <h2>All Products</h2>
+                <a href="#">Export</a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Child Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <div class="product-info">
+                                <div class="product-image">
+                                    {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                    <img src="https://placehold.co/80x80" alt="No Image">
+                                    {% endif %}
+                                </div>
+                                <div class="product-details">
+                                    <h3>{{ product.name }}</h3>
+                                    <p>{{ product.detail|truncatechars:55 }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ product.category.name }}</td>
+                        <td>{{ product.subCategory.name }}</td>
+                        <td>{{ product.childCategory.name }}</td>
+                        <td><strong>₹{{ product.price }}</strong></td>
+                        <td>
+                            {% if product.quantity > 0 %}
+                            <span class="stock in-stock">{{ product.quantity }}</span>
+                            {% else %}
+                            <span class="stock out-stock">Out of Stock</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ product.createdAt|date:"d M Y" }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="" class="view"><i class="fa-solid fa-eye"></i></a>
+                                <a href="" class="edit"><i class="fa-solid fa-pen"></i></a>
+                                <a href="" class="delete"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9">
+                            <div class="empty-table">
+                                <i class="fa-solid fa-box-open"></i>
+                                <h3>No Products Found</h3>
+                                <p>No products have been added yet.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+const searchInput = document.getElementById("searchProduct");
+if (searchInput) {
+    searchInput.addEventListener("keyup", function () {
+        let value = this.value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
+        rows.forEach(function (row) {
+            if (row.innerText.toLowerCase().includes(value)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+}
+</script>
+</body>
+</html>

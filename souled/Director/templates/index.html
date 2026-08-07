@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+</head>
+<body>
+<div class="dashboard">
+    {% include 'sidebar.html' %}
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="page-title">
+                <span class="eyebrow">Director Panel</span>
+                <h1>Dashboard</h1>
+                <p>Welcome back, admin. Your storefront is running smoothly.</p>
+            </div>
+
+            <div class="top-actions">
+                <label class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </label>
+
+                <div class="admin-profile">
+                    <img src="https://i.pravatar.cc/100" alt="Admin">
+                    <div>
+                        <h4>Administrator</h4>
+                        <span>Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero-panel">
+            <div>
+                <p class="hero-label">Performance overview</p>
+                <h2>Everything is synced and ready for the next sale.</h2>
+                <p class="hero-text">Monitor customers, products, and orders from one polished control center.</p>
+            </div>
+            <div class="hero-badges">
+                <span><i class="fa-solid fa-arrow-trend-up"></i> +12% this month</span>
+                <span><i class="fa-solid fa-bolt"></i> Live updates</span>
+            </div>
+        </section>
+
+        <section class="cards">
+            <div class="card users">
+                <i class="fa-solid fa-users"></i>
+                <div>
+                    <h2>{{ users.count }}</h2>
+                    <p>Total Users</p>
+                </div>
+            </div>
+
+            <div class="card products">
+                <i class="fa-solid fa-box-open"></i>
+                <div>
+                    <h2>{{ products.count }}</h2>
+                    <p>Total Products</p>
+                </div>
+            </div>
+
+            <div class="card orders">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <div>
+                    <h2>{{ orders.count }}</h2>
+                    <p>Total Orders</p>
+                </div>
+            </div>
+
+            <div class="card revenue">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                <div>
+                    <h2>₹{{ revenue }}</h2>
+                    <p>Total Revenue</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-grid">
+            <div class="table-card">
+                <div class="card-header">
+                    <h2>Latest Users</h2>
+                    <a href="{% url 'users' %}">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.createAt|date:"d M Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="empty-state">No users found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-card">
+                <div class="card-header">
+                    <h2>Latest Orders</h2>
+                    <a href="{% url 'getOrders' %}">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.user.name }}</td>
+                            <td><span class="status {{ order.status|lower }}">{{ order.status }}</span></td>
+                            <td>₹{{ order.total_price }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No orders found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>© 2026 <strong>ShopKart Admin Panel</strong>. All rights reserved.</p>
+        </footer>
+    </main>
+</div>
+</body>
+</html>
