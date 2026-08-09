@@ -1,0 +1,311 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Order</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin/dashboard.css' %}">
+
+    <link rel="stylesheet"
+          href="{% static 'css/admin/editOrder.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    {% include "sidebar.html" %}
+
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div class="page-title">
+
+                <h1>Edit Order</h1>
+
+                <p>Update customer order information.</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-form-card">
+
+            <div class="form-header">
+
+                <div class="form-icon">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>Order #{{ order.id }}</h2>
+
+                    <p>Update order details.</p>
+
+                </div>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- USER -->
+
+                    <div class="form-group">
+
+                        <label>Customer</label>
+
+                        <select name="user" required>
+
+                            {% for user in users %}
+
+                            <option value="{{ user.id }}"
+                                {% if order.user_id == user.id %}
+                                selected
+                                {% endif %}>
+
+                                {{ user.name }} - {{ user.email }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PRODUCT -->
+
+                    <div class="form-group">
+
+                        <label>Product</label>
+
+                        <select name="product" required>
+
+                            {% for product in products %}
+
+                            <option value="{{ product.id }}"
+                                {% if order.product_id == product.id %}
+                                selected
+                                {% endif %}>
+
+                                {{ product.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="form-group">
+
+                        <label>Quantity</label>
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            value="{{ order.quantity }}"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- TOTAL -->
+
+                    <div class="form-group">
+
+                        <label>Total Price</label>
+
+                        <input
+                            type="number"
+                            name="total_price"
+                            value="{{ order.total_price }}"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label>Full Name</label>
+
+                        <input
+                            type="text"
+                            name="full_name"
+                            value="{{ order.full_name|default:'' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label>Phone</label>
+
+                        <input
+                            type="text"
+                            name="phone"
+                            value="{{ order.phone|default:'' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- PAYMENT -->
+
+                    <div class="form-group">
+
+                        <label>Payment Method</label>
+
+                        <select name="payment_method">
+
+                            <option value="COD"
+                                {% if order.payment_method == "COD" %}
+                                selected
+                                {% endif %}>
+                                COD
+                            </option>
+
+                            <option value="Online"
+                                {% if order.payment_method == "Online" %}
+                                selected
+                                {% endif %}>
+                                Online
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Status</label>
+
+                        <select name="status" required>
+
+                            <option value="Pending"
+                                {% if order.status == "Pending" %}
+                                selected
+                                {% endif %}>
+                                Pending
+                            </option>
+
+                            <option value="Processing"
+                                {% if order.status == "Processing" %}
+                                selected
+                                {% endif %}>
+                                Processing
+                            </option>
+
+                            <option value="Shipped"
+                                {% if order.status == "Shipped" %}
+                                selected
+                                {% endif %}>
+                                Shipped
+                            </option>
+
+                            <option value="Delivered"
+                                {% if order.status == "Delivered" %}
+                                selected
+                                {% endif %}>
+                                Delivered
+                            </option>
+
+                            <option value="Cancelled"
+                                {% if order.status == "Cancelled" %}
+                                selected
+                                {% endif %}>
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full-width">
+
+                        <label>Address</label>
+
+                        <textarea
+                            name="address"
+                            rows="5"
+                        >{{ order.address|default:'' }}</textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-buttons">
+
+                    <a href="{% url 'getOrders' %}"
+                       class="cancel-btn">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Cancel
+
+                    </a>
+
+                    <button type="submit"
+                            class="save-btn">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Update Order
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

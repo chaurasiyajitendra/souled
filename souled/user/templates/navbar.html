@@ -82,13 +82,19 @@
   <!-- Search -->
 
   <div class="search">
-    <form>
-      <input type="text" placeholder="Search products..." />
+  <form action="{% url 'search' %}" method="GET">
 
-      <button>
-        <i class="fa-solid fa-search"></i>
+      <input
+          type="text"
+          name="q"
+          placeholder="Search products..."
+      >
+
+      <button type="submit">
+          <i class="fa-solid fa-search"></i>
       </button>
-    </form>
+
+  </form>
   </div>
 
   <!-- Icons -->
@@ -96,12 +102,17 @@
   <div class="icons">
     <a href="/wishlist" class="icon">
       <i class="fa-regular fa-heart"></i>
-      <span class="badge">2</span>
+      {% if wishlist_count > 0 %}
+        <span class="badge">{{ wishlist_count }}</span>
+      {% endif %}
+
     </a>
 
     <a href="/cart" class="icon">
       <i class="fa-solid fa-cart-shopping"></i>
-      <span class="badge">3</span>
+      {% if cart_count > 0 %}
+        <span class="badge">{{ cart_count }}</span>
+      {% endif %}
     </a>
 
     {% if request.session.username %}

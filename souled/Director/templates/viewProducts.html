@@ -27,7 +27,7 @@
                     <input type="text" id="searchProduct" placeholder="Search products...">
                 </label>
 
-                <a href="" class="add-product-btn">
+                <a href="{% url 'addProduct' %}" class="add-product-btn">
                     <i class="fa-solid fa-plus"></i>
                     Add Product
                 </a>
@@ -96,6 +96,7 @@
                         <th>Price</th>
                         <th>Stock</th>
                         <th>Date</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -131,10 +132,43 @@
                         </td>
                         <td>{{ product.createdAt|date:"d M Y" }}</td>
                         <td>
+
+                        {% if product.active %}
+
+                        <a href="{% url 'deleteProduct' product.id %}"
+                        class="delete"
+                        onclick="return confirm('Product ko inactive karna hai?');">
+
+                            <i class="fa-solid fa-ban"></i>
+
+                        </a>
+
+                        {% else %}
+
+                        <a href="{% url 'activateProduct' product.id %}"
+                        class="activate"
+                        onclick="return confirm('Product ko active karna hai?');">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </a>
+                        </td>
+
+                        {% endif %}
+                        <td>
                             <div class="action-btns">
-                                <a href="" class="view"><i class="fa-solid fa-eye"></i></a>
-                                <a href="" class="edit"><i class="fa-solid fa-pen"></i></a>
-                                <a href="" class="delete"><i class="fa-solid fa-trash"></i></a>
+
+                                <a href="{% url 'editProduct' product.id %}" class="edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+
+                                <a href="{% url 'deleteProduct' product.id %}"
+                                    class="delete"
+                                    onclick="return confirm('Are you sure you want to delete this product?');"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+
                             </div>
                         </td>
                     </tr>

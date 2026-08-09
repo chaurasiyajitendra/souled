@@ -123,8 +123,7 @@
                 <td>{{ user.createAt|date:"d M Y" }}</td>
                 <td>
                   <div class="action-btns">
-                    <a href="" class="edit-btn"><i class="fa-solid fa-pen"></i></a>
-                    <a href="" class="delete-btn" onclick="return confirm('Delete this user?');"><i class="fa-solid fa-trash"></i></a>
+                    <a href="{% url 'deleteUser' user.id  %}" class="delete-btn" onclick="return confirm('Delete this user?');"><i class="fa-solid fa-trash"></i></a>
                   </div>
                 </td>
               </tr>

@@ -60,6 +60,7 @@ class Product(models.Model):
     childCategory = models.ForeignKey(ChildCategory,on_delete=models.CASCADE)
     image = models.FileField(upload_to="produtc")
     createdAt = models.DateField(auto_now_add=True,null=True,blank=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

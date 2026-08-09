@@ -1,0 +1,366 @@
+/*======================================
+        ADD PRODUCT PAGE
+======================================*/
+
+.product-form-card{
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 25px rgba(15,23,42,.05);
+    animation:fadeUp .6s ease;
+}
+
+/*======================================
+        FORM HEADER
+======================================*/
+
+.form-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding-bottom:25px;
+    margin-bottom:30px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.form-icon{
+    width:58px;
+    height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:15px;
+    background:#ede9fe;
+    color:#7c3aed;
+    font-size:25px;
+}
+
+.form-header h2{
+    font-size:23px;
+    color:#0f172a;
+    margin-bottom:4px;
+}
+
+.form-header p{
+    color:#64748b;
+    font-size:14px;
+}
+
+/*======================================
+        FORM GRID
+======================================*/
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:22px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group.full-width{
+    grid-column:1 / -1;
+}
+
+.form-group label{
+    font-size:14px;
+    font-weight:600;
+    color:#334155;
+    margin-bottom:8px;
+}
+
+/*======================================
+        INPUT / SELECT / TEXTAREA
+======================================*/
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    border:1px solid #dbe3ed;
+    border-radius:11px;
+    background:#f8fafc;
+    color:#334155;
+    outline:none;
+    font-size:14px;
+    transition:.3s ease;
+}
+
+.form-group input,
+.form-group select{
+    height:48px;
+    padding:0 15px;
+}
+
+.form-group textarea{
+    padding:14px 15px;
+    resize:vertical;
+    min-height:130px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    background:#fff;
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+
+/*======================================
+        FILE INPUT
+======================================*/
+
+.image-group input[type="file"]{
+    padding:11px 12px;
+    cursor:pointer;
+    background:#f8fafc;
+}
+
+.image-group input[type="file"]::file-selector-button{
+    border:none;
+    background:#2563eb;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:8px;
+    margin-right:12px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.image-group input[type="file"]::file-selector-button:hover{
+    background:#1d4ed8;
+}
+/*======================================
+        FORM BUTTONS
+======================================*/
+
+.form-buttons{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:14px;
+    margin-top:30px;
+    padding-top:25px;
+    border-top:1px solid #e2e8f0;
+}
+
+.form-buttons a,
+.form-buttons button{
+    height:48px;
+    padding:0 22px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+    transition:.3s ease;
+}
+
+/*======================================
+        CANCEL BUTTON
+======================================*/
+
+.cancel-btn{
+    background:#f1f5f9;
+    color:#475569;
+    border:1px solid #e2e8f0;
+}
+
+.cancel-btn:hover{
+    background:#e2e8f0;
+    transform:translateY(-2px);
+}
+
+/*======================================
+        SAVE BUTTON
+======================================*/
+
+.save-btn{
+    border:none;
+    background:#2563eb;
+    color:#fff;
+    box-shadow:0 8px 18px rgba(37,99,235,.2);
+}
+
+.save-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+    box-shadow:0 12px 25px rgba(37,99,235,.28);
+}
+
+/*======================================
+        ANIMATION
+======================================*/
+
+@keyframes formFade{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+.product-form-card{
+    animation:formFade .5s ease;
+}
+
+/*======================================
+        RESPONSIVE
+======================================*/
+
+@media(max-width:768px){
+
+    .product-form-card{
+        padding:22px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full-width{
+        grid-column:auto;
+    }
+
+    .form-buttons{
+        flex-direction:column-reverse;
+        align-items:stretch;
+    }
+
+    .form-buttons a,
+    .form-buttons button{
+        width:100%;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .product-form-card{
+        padding:18px;
+        border-radius:15px;
+    }
+
+    .form-header{
+        align-items:flex-start;
+    }
+
+    .form-icon{
+        width:50px;
+        height:50px;
+        font-size:21px;
+        flex-shrink:0;
+    }
+
+    .form-header h2{
+        font-size:19px;
+    }
+
+    .form-header p{
+        font-size:13px;
+    }
+
+}
+
+/*======================================
+        SCROLLBAR
+======================================*/
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f1f5f9;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#94a3b8;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#64748b;
+}
+
+/*======================================
+        FINAL POLISH
+======================================*/
+
+::selection{
+    background:#2563eb;
+    color:#fff;
+}
+
+button,
+a,
+input,
+select,
+textarea{
+    font-family:inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+    outline:3px solid rgba(37,99,235,.2);
+    outline-offset:2px;
+}
+
+/*======================================
+        CURRENT PRODUCT IMAGE
+======================================*/
+
+.current-image{
+    width:100%;
+    min-height:120px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#f8fafc;
+    border:1px solid #dbe3ed;
+    border-radius:11px;
+}
+
+.current-image img{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+}
+
+.current-image span{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/*======================================
+        EDIT IMAGE RESPONSIVE
+======================================*/
+
+@media(max-width:480px){
+
+    .current-image img{
+        width:80px;
+        height:80px;
+    }
+
+}

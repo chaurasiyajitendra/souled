@@ -21,33 +21,41 @@
 
       <div class="right">
         <h2>Register</h2>
+        {% if error %}
+
+          <div class="error-message">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>{{ error }}</span>
+          </div>
+
+        {% endif %}
 
         <form method="post" action="{% url 'register' %}">
           {% csrf_token %}
 
           <div class="input-box">
             <i class="fa-solid fa-user"></i>
-            <input type="text" name="name" placeholder="Full Name" />
+            <input required type="text" name="name" placeholder="Full Name" />
           </div>
 
           <div class="input-box">
             <i class="fa-solid fa-user"></i>
-            <input type="text" name="username" placeholder="Username" />
+            <input minlength="3" required type="text" name="username" placeholder="Username" />
           </div>
 
           <div class="input-box">
             <i class="fa-solid fa-envelope"></i>
-            <input type="email" name="email" placeholder="Email" />
+            <input required type="email" name="email" placeholder="Email" />
           </div>
 
           <div class="input-box">
             <i class="fa-solid fa-phone"></i>
-            <input type="text" name="phone" placeholder="Phone" />
+            <input minlength="10" maxlength="13" required type="text" name="phone" placeholder="Phone" />
           </div>
 
           <div class="input-box">
             <i class="fa-solid fa-lock"></i>
-            <input type="text" name="password" placeholder="Password" />
+            <input required type="password" name="password" placeholder="Password" />
           </div>
 
           <button>Create Account</button>

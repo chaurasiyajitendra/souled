@@ -24,6 +24,10 @@ body {
   color: var(--text);
 }
 
+.main-content{
+    width: 70% !important;
+}
+
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -174,6 +178,7 @@ body {
 }
 
 .table-card {
+  width:100% ;
   background: var(--panel);
   border-radius: 20px;
   border: 1px solid var(--border);

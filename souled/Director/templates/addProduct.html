@@ -1,0 +1,231 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Add Product</title>
+
+    <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/admin/addProduct.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+
+  <body>
+    <div class="dashboard">
+      {% include "sidebar.html" %}
+
+      <main class="main-content">
+        <!--==========================
+                PAGE HEADER
+        ==========================-->
+
+        <div class="topbar">
+          <div class="page-title">
+            <h1>Add Product</h1>
+
+            <p>Add a new product to your store.</p>
+          </div>
+        </div>
+
+        <!--==========================
+                PRODUCT FORM
+        ==========================-->
+
+        <div class="product-form-card">
+          <div class="form-header">
+            <div class="form-icon">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+
+            <div>
+              <h2>Product Information</h2>
+
+              <p>Enter the details of your new product.</p>
+            </div>
+          </div>
+
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-grid">
+              <!-- Product Name -->
+
+              <div class="form-group">
+                <label> Product Name </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter product name"
+                  required
+                />
+              </div>
+
+              <!-- Price -->
+
+              <div class="form-group">
+                <label> Price </label>
+
+                <input
+                  type="number"
+                  name="price"
+                  step="0.01"
+                  min="0"
+                  placeholder="Enter price"
+                  required
+                />
+              </div>
+
+              <!-- Quantity -->
+
+              <div class="form-group">
+                <label> Quantity </label>
+
+                <input
+                  type="number"
+                  name="quantity"
+                  min="0"
+                  placeholder="Enter quantity"
+                  required
+                />
+              </div>
+
+              <!-- Category -->
+
+              <div class="form-group">
+                <label> Category </label>
+
+                <select name="category" id="category" required>
+                  <option value="">Select Category</option>
+
+                  {% for category in categories %}
+
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+
+                  {% endfor %}
+                </select>
+              </div>
+              <!-- Sub Category -->
+
+              <div class="form-group">
+                <label> Sub Category </label>
+
+                <select name="subcategory" id="subcategory" required>
+                  <option value="">Select Sub Category</option>
+                </select>
+              </div>
+
+              <!-- Child Category -->
+
+              <div class="form-group">
+                <label> Child Category </label>
+
+                <select name="childcategory" id="childcategory" required>
+                  <option value="">Select Child Category</option>
+                </select>
+              </div>
+
+              <!-- Product Image -->
+
+              <div class="form-group image-group">
+                <label> Product Image </label>
+
+                <input type="file" name="image" accept="image/*" required />
+              </div>
+
+              <!-- Product Detail -->
+
+              <div class="form-group full-width">
+                <label> Product Details </label>
+
+                <textarea
+                  name="detail"
+                  rows="6"
+                  placeholder="Enter product details..."
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="form-buttons">
+              <a href="{% url 'products' %}" class="cancel-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Cancel
+              </a>
+
+              <button type="submit" class="save-btn">
+                <i class="fa-solid fa-plus"></i>
+
+                Add Product
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+    <script>
+      $("#category").change(function () {
+        let category_id = $(this).val();
+
+        $("#subcategory").html('<option value="">Select Sub Category</option>');
+
+        $("#childcategory").html(
+          '<option value="">Select Child Category</option>',
+        );
+
+        if (category_id) {
+          $.ajax({
+            url: "/director/get-subcategories/" + category_id + "/",
+
+            type: "GET",
+
+            success: function (response) {
+              $.each(response, function (index, item) {
+                $("#subcategory").append(
+                  "<option value='" + item.id + "'>" + item.name + "</option>",
+                );
+              });
+            },
+          });
+        }
+      });
+
+      $("#subcategory").change(function () {
+        let subcategory_id = $(this).val();
+
+        $("#childcategory").html(
+          '<option value="">Select Child Category</option>',
+        );
+
+        if (subcategory_id) {
+          $.ajax({
+            url: "/director/get-childcategories/" + subcategory_id + "/",
+
+            type: "GET",
+
+            success: function (response) {
+              $.each(response, function (index, item) {
+                $("#childcategory").append(
+                  "<option value='" + item.id + "'>" + item.name + "</option>",
+                );
+              });
+            },
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

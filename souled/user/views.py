@@ -12,7 +12,7 @@ from django.db.models import Q
 
 def index(req):
 
-    trending_products = Product.objects.order_by("-id")[:8]
+    trending_products = Product.objects.order_by("-id").filter(active=True)[:8]
 
     return render(req, "inde.html", {
         "trending_products": trending_products,
@@ -28,6 +28,18 @@ def register(request):
         email = request.POST.get("email", "").strip().lower()
         password = make_password(request.POST.get("password"))
         phone = request.POST.get("phone")
+
+        if User.objects.filter(email=email).exists():
+
+            return render(request, "register.html", {
+                "error": "This email is already registered."
+            })
+
+        if User.objects.filter(username=username).exists():
+
+            return render(request, "register.html", {
+                "error": "This username is already taken."
+            })
 
         user = User.objects.create(
             name = name,
@@ -51,6 +63,8 @@ def login(request):
         email = request.POST.get("email").strip().lower()
         password = request.POST.get("password")
 
+
+
         try:
             user = User.objects.get(email=email)
 
@@ -60,6 +74,9 @@ def login(request):
 
                 user.loginAt = timezone.now()
                 user.save()
+
+                if email == "admin@me.com":
+                    return redirect("/director/")
 
                 return redirect("/")
 
@@ -153,47 +170,26 @@ def about(req):
 def contact(req):
     return render(req,"contact.html")
 
-def addProduct(request):
+def search_products(request):
 
-    if request.method == "POST":
+    query = request.GET.get("q", "")
 
-        name = request.POST.get("name")
-        detail = request.POST.get("detail")
-        price = request.POST.get("price")
-        quantity = request.POST.get("quantity")
+    products = Product.objects.filter(
+        name__icontains=query,
+        active=True
+    )
 
-        category = Category.objects.get(id=request.POST.get("category"))
-        subCategory = SubCategory.objects.get(id=request.POST.get("subcategory"))
-        childCategory = ChildCategory.objects.get(id=request.POST.get("childcategory"))
-
-        image = request.FILES.get("image")
-
-        Product.objects.create(
-            name=name,
-            detail=detail,
-            price=price,
-            quantity=quantity,
-            category=category,
-            subCategory=subCategory,
-            childCategory=childCategory,
-            image=image
-        )
-
-        return redirect("/add-product/")
-
-    context = {
-        "categories": Category.objects.all(),
-        "subcategories": SubCategory.objects.all(),
-        "childcategories": ChildCategory.objects.all(),
-    }
-
-    return render(request, "addProduct.html", context)
+    return render(request, "products.html", {
+        "products": products,
+        "search_query": query
+    })
 
 def category_products(request, category):
     category_obj = Category.objects.get(slug=category)
 
     products = Product.objects.filter(
-        category=category_obj
+        Q(category=category_obj) &
+        Q(active=True)
     )
 
     return render(request, "products.html", {
@@ -209,7 +205,8 @@ def subcategory_products(request, category, subcategory):
         category=category_obj
     )
     products = Product.objects.filter(
-        subCategory=subcategory_obj
+        Q(subCategory=subcategory_obj)&
+        Q(active=True)
     )
     return render(request, "products.html", {
         "products": products,
@@ -219,7 +216,8 @@ def childcategory_products(request, id):
     child_category = ChildCategory.objects.get(id=id)
 
     products = Product.objects.filter(
-        childCategory=child_category
+        Q(childCategory=child_category)&
+        Q(active=True)
     )
 
     return render(request, "products.html", {
@@ -237,7 +235,8 @@ def product_list(request, category, subcategory, child):
     )
 
     products = Product.objects.filter(
-        childCategory=child_category
+        Q(childCategory=child_category)&
+        Q(active=True)
     )
 
     return render(request, "products.html", {
@@ -426,10 +425,8 @@ def checkout(request):
     if not cart_items.exists():
         return redirect("/cart/")
 
-    # Subtotal Decimal formatting
     subtotal = sum(item.product.price * item.quantity for item in cart_items)
     
-    # Int ki jagah Decimal use karein
     shipping = Decimal('0.00')
     discount = Decimal('0.00')
 
@@ -442,34 +439,35 @@ def checkout(request):
         state = request.POST.get("state")
         pincode = request.POST.get("pincode")
 
-        shipping_method = request.POST.get("shipping")
         payment_method = request.POST.get("payment")
+        shipping_method = request.POST.get("shipping")
 
-        # Decimal format me define karein
+
         if shipping_method == "express":
             shipping = Decimal('99.00')
 
-        # Total Calculation using Decimal
         total = subtotal + shipping - discount
-        
-        # Per item shipping split (Decimal)
+
         item_shipping = shipping / Decimal(cart_items.count())
 
-        # Save Orders
+
         for item in cart_items:
             item_total = (item.product.price * item.quantity) + item_shipping
             
-            Order.objects.create(
+            order = Order.objects.create(
                 user=user,
                 product=item.product,
                 quantity=item.quantity,
-                total_price=item_total
+                total_price=item_total,
+                full_name = name,
+                address = address,
+                phone = phone,
+                payment_method = payment_method
             )
 
-        # Clear Cart
         cart_items.delete()
 
-        return redirect("/order-success/")
+        return redirect("orderSuccess", id=order.id)
 
     # Initial GET Request calculation
     total = subtotal + shipping - discount
@@ -496,3 +494,14 @@ def orders(req):
     user_orders = Order.objects.filter(user=user).order_by("-created_at")
 
     return render(req, "myOrder.html", {"orders": user_orders})
+
+def orderSuccess(request, id):
+
+    order = get_object_or_404(
+        Order.objects.select_related("product"),
+        id=id
+    )
+
+    return render(request, "orderSuccess.html", {
+        "order": order
+    })

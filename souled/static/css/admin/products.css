@@ -494,6 +494,15 @@ body {
             PRICE
 ======================================*/
 
+.status.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status.inactive {
+    background: #fee2e2;
+    color: #dc2626;
+}
 .table-card strong{
     color:#16a34a;
     font-size:16px;

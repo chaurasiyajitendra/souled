@@ -1,199 +1,289 @@
 {% load static %}
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta charset="UTF-8">
+    <title>My Orders - ShopKart</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
-    <title>My Orders</title>
+    <link rel="stylesheet" href="{% static 'css/myOrders.css' %}" />
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/myOrders.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+  <body>
+    {% include "navbar.html" %}
 
-</head>
-
-<body>
-
-{% include "navbar.html" %}
-
-<!--=========================
+    <!-- =================================
         HERO
-==========================-->
+================================= -->
 
-<section class="orders-hero">
+    <section class="orders-hero">
+      <div class="hero-content">
+        <span class="hero-label">
+          <i class="fa-solid fa-box-open"></i>
 
-    <div class="hero-content">
-
-        <span>
-            <i class="fa-solid fa-box-open"></i>
-            Order History
+          Order History
         </span>
 
         <h1>My Orders</h1>
 
-        <p>
-            Track your purchases and view your previous orders.
-        </p>
+        <p>Track your purchases and view your previous orders.</p>
+      </div>
+    </section>
 
-    </div>
+    <!-- =================================
+        ORDERS SECTION
+================================= -->
 
-</section>
-
-<!--=========================
-        ORDERS
-==========================-->
-
-<section class="orders-section">
-
-    <div class="orders-container">
-
+    <section class="orders-section">
+      <div class="orders-container">
         {% if orders %}
 
-            {% for order in orders %}
+        <!-- HEADER -->
 
-            <div class="order-card">
+        <div class="orders-heading">
+          <div>
+            <h2>Your Orders</h2>
 
-                <div class="order-top">
+            <p>{{ orders|length }} order{{ orders|length|pluralize }} placed</p>
+          </div>
+        </div>
 
-                    <div>
+        <!-- =================================
+                    ORDER LIST
+            ================================= -->
 
-                        <h3>Order #{{ order.id }}</h3>
+        <div class="orders-list">
+          {% for order in orders %}
 
-                        <p>
-                            Placed on
-                            {{ order.created_at|date:"d M Y" }}
-                        </p>
+          <article class="order-card">
+            <!-- =========================
+                            ORDER HEADER
+                    ========================== -->
 
-                    </div>
+            <div class="order-header">
+              <div class="order-number">
+                <span>ORDER ID</span>
 
-                </div>
+                <h3>#{{ order.id }}</h3>
+              </div>
 
-                <div class="order-products">
+              <div class="order-date">
+                <span>ORDERED ON</span>
 
-                    <div class="product-row">
+                <strong> {{ order.created_at|date:"d M Y" }} </strong>
+              </div>
 
-                        <div class="product-left">
+              <div class="order-status">
+                <span
+                  class="status
+                                {{ order.status|lower }}"
+                >
+                  <i class="fa-solid fa-circle"></i>
 
-                            {% if order.product.image %}
-
-                                <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}">
-
-                            {% else %}
-
-                                <img src="https://placehold.co/100x100">
-
-                            {% endif %}
-
-                            <div>
-
-                                <h4>{{ order.product.name }}</h4>
-
-                                <p>Quantity : {{ order.quantity }}</p>
-
-                                <span>₹{{ order.product.price }}</span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="order-bottom">
-
-                    <p><strong>Customer :</strong> {{ order.full_name }}</p>
-
-                    <p><strong>Phone :</strong> {{ order.phone }}</p>
-
-                    <p><strong>Payment :</strong> {{ order.payment_method }}</p>
-
-                    <p><strong>Address :</strong> {{ order.address }}</p>
-
-                    <h3>
-
-                        Total :
-
-                        <span>₹{{ order.total_price }}</span>
-
-                    </h3>
-
-                </div>
-
+                  {{ order.status }}
+                </span>
+              </div>
             </div>
 
-            {% endfor %}
+            <!-- =========================
+                            PRODUCT
+                    ========================== -->
+
+            <div class="order-product">
+              <div class="product-image">
+                {% if order.product.image %}
+
+                <img
+                  src="{{ order.product.image.url }}"
+                  alt="{{ order.product.name }}"
+                />
+
+                {% else %}
+
+                <img src="https://placehold.co/150x150" alt="Product" />
+
+                {% endif %}
+              </div>
+
+              <div class="product-details">
+                <span class="product-category">
+                  {{ order.product.category.name }}
+                </span>
+
+                <h3>{{ order.product.name }}</h3>
+
+                <div class="product-meta">
+                  <span>
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    Quantity:
+                    <strong> {{ order.quantity }} </strong>
+                  </span>
+
+                  <span>
+                    <i class="fa-solid fa-tag"></i>
+
+                    ₹{{ order.product.price }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="product-price">
+                <span>Total</span>
+
+                <strong> ₹{{ order.total_price }} </strong>
+              </div>
+            </div>
+
+            <!-- =========================
+                            ORDER INFORMATION
+                    ========================== -->
+
+            <div class="order-info">
+              <!-- DELIVERY -->
+
+              <div class="info-box">
+                <div class="info-icon">
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+
+                <div>
+                  <span>Delivery Address</span>
+
+                  <strong> {{ order.full_name }} </strong>
+
+                  <p>{{ order.address }}</p>
+                </div>
+              </div>
+
+              <!-- PHONE -->
+
+              <div class="info-box">
+                <div class="info-icon">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+
+                <div>
+                  <span>Contact Number</span>
+
+                  <strong> {{ order.phone }} </strong>
+
+                  <p>Customer contact</p>
+                </div>
+              </div>
+
+              <!-- PAYMENT -->
+
+              <div class="info-box">
+                <div class="info-icon">
+                  <i class="fa-solid fa-credit-card"></i>
+                </div>
+
+                <div>
+                  <span>Payment Method</span>
+
+                  <strong> {{ order.payment_method }} </strong>
+
+                  <p>Payment information</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- =========================
+                            ORDER FOOTER
+                    ========================== -->
+
+            <div class="order-footer">
+              <div class="footer-message">
+                {% if order.status == "Delivered" %}
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Your order has been delivered. {% elif order.status ==
+                "Cancelled" %}
+
+                <i class="fa-solid fa-circle-xmark"></i>
+
+                This order has been cancelled. {% else %}
+
+                <i class="fa-solid fa-truck"></i>
+
+                Your order is being processed. {% endif %}
+              </div>
+
+              <div class="order-total">
+                <span>Order Total</span>
+
+                <strong> ₹{{ order.total_price }} </strong>
+              </div>
+            </div>
+          </article>
+
+          {% endfor %}
+        </div>
 
         {% else %}
 
-        <!--=========================
-            EMPTY
-        ==========================-->
+        <!-- =================================
+                    EMPTY ORDERS
+            ================================= -->
 
         <div class="empty-orders">
+          <div class="empty-icon">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
 
-            <div class="empty-icon">
+          <span class="empty-label"> ORDER HISTORY </span>
 
-                <i class="fa-solid fa-box-open"></i>
+          <h2>No Orders Yet</h2>
 
-            </div>
+          <p>
+            You haven't placed any orders yet. Start shopping and your orders
+            will appear here.
+          </p>
 
-            <h2>No Orders Yet</h2>
+          <a href="{% url 'home' %}" class="shop-btn">
+            <i class="fa-solid fa-bag-shopping"></i>
 
-            <p>
-
-                You haven't placed any orders yet.
-
-            </p>
-
-            <a href="{% url 'home' %}" class="shop-btn">
-
-                <i class="fa-solid fa-bag-shopping"></i>
-
-                Continue Shopping
-
-            </a>
-
+            Start Shopping
+          </a>
         </div>
 
         {% endif %}
+      </div>
+    </section>
 
-    </div>
-
-</section>
-
-<!--=========================
+    <!-- =================================
         FOOTER
-==========================-->
+================================= -->
 
-<footer class="orders-footer">
-
-    <div class="footer-content">
-
+    <footer class="orders-footer">
+      <div class="footer-content">
         <p>
-
-            © 2026 <strong>ShopKart</strong>. All Rights Reserved.
-
+          © 2026
+          <strong>ShopKart</strong>. All Rights Reserved.
         </p>
 
         <div class="footer-icons">
+          <i class="fa-brands fa-facebook-f"></i>
 
-            <i class="fa-brands fa-facebook-f"></i>
-            <i class="fa-brands fa-instagram"></i>
-            <i class="fa-brands fa-x-twitter"></i>
-            <i class="fa-brands fa-linkedin-in"></i>
+          <i class="fa-brands fa-instagram"></i>
 
+          <i class="fa-brands fa-x-twitter"></i>
+
+          <i class="fa-brands fa-linkedin-in"></i>
         </div>
-
-    </div>
-
-</footer>
-
-</body>
+      </div>
+    </footer>
+  </body>
 </html>

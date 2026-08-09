@@ -1,0 +1,383 @@
+/*======================================
+        EDIT ORDER PAGE
+======================================*/
+
+.order-form-card{
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 25px rgba(15,23,42,.05);
+    animation:orderFade .5s ease;
+}
+
+
+/*======================================
+        FORM HEADER
+======================================*/
+
+.form-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding-bottom:25px;
+    margin-bottom:30px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.form-icon{
+    width:58px;
+    height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:#dbeafe;
+    color:#2563eb;
+
+    font-size:24px;
+    flex-shrink:0;
+}
+
+.form-header h2{
+    font-size:23px;
+    color:#0f172a;
+    margin-bottom:4px;
+}
+
+.form-header p{
+    color:#64748b;
+    font-size:14px;
+}
+
+
+/*======================================
+        FORM GRID
+======================================*/
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:22px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group.full-width{
+    grid-column:1 / -1;
+}
+
+
+/*======================================
+        LABEL
+======================================*/
+
+.form-group label{
+    font-size:14px;
+    font-weight:600;
+    color:#334155;
+    margin-bottom:8px;
+}
+
+
+/*======================================
+        INPUT / SELECT / TEXTAREA
+======================================*/
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+
+    border:1px solid #dbe3ed;
+    border-radius:11px;
+
+    background:#f8fafc;
+    color:#334155;
+
+    outline:none;
+
+    font-size:14px;
+
+    transition:.3s ease;
+}
+
+.form-group input,
+.form-group select{
+    height:48px;
+    padding:0 15px;
+}
+
+.form-group textarea{
+    min-height:130px;
+    padding:14px 15px;
+    resize:vertical;
+}
+
+
+/*======================================
+        FOCUS
+======================================*/
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    background:#fff;
+
+    border-color:#2563eb;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.1);
+}
+
+
+/*======================================
+        SELECT ARROW
+======================================*/
+
+.form-group select{
+    cursor:pointer;
+}
+
+
+/*======================================
+        FORM BUTTONS
+======================================*/
+
+.form-buttons{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+
+    gap:14px;
+
+    margin-top:30px;
+    padding-top:25px;
+
+    border-top:1px solid #e2e8f0;
+}
+
+.form-buttons a,
+.form-buttons button{
+    height:48px;
+
+    padding:0 22px;
+
+    border-radius:11px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:9px;
+
+    font-size:14px;
+    font-weight:600;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+}
+
+
+/*======================================
+        CANCEL
+======================================*/
+
+.cancel-btn{
+    background:#f1f5f9;
+    color:#475569;
+
+    border:1px solid #e2e8f0;
+}
+
+.cancel-btn:hover{
+    background:#e2e8f0;
+
+    transform:translateY(-2px);
+}
+
+
+/*======================================
+        UPDATE
+======================================*/
+
+.save-btn{
+    border:none;
+
+    background:#2563eb;
+    color:#fff;
+
+    box-shadow:
+        0 8px 18px rgba(37,99,235,.2);
+}
+
+.save-btn:hover{
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(37,99,235,.28);
+}
+
+
+/*======================================
+        STATUS SELECT
+======================================*/
+
+select[name="status"]{
+    font-weight:600;
+}
+
+
+/*======================================
+        ANIMATION
+======================================*/
+
+@keyframes orderFade{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+/*======================================
+        RESPONSIVE
+======================================*/
+
+@media(max-width:768px){
+
+    .order-form-card{
+        padding:22px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full-width{
+        grid-column:auto;
+    }
+
+    .form-buttons{
+        flex-direction:column-reverse;
+        align-items:stretch;
+    }
+
+    .form-buttons a,
+    .form-buttons button{
+        width:100%;
+    }
+
+}
+
+
+@media(max-width:480px){
+
+    .main-content{
+        padding:15px;
+    }
+
+    .order-form-card{
+        padding:18px;
+
+        border-radius:15px;
+    }
+
+    .form-header{
+        align-items:flex-start;
+    }
+
+    .form-icon{
+        width:50px;
+        height:50px;
+
+        font-size:21px;
+    }
+
+    .form-header h2{
+        font-size:19px;
+    }
+
+    .form-header p{
+        font-size:13px;
+    }
+
+    .form-group input,
+    .form-group select{
+        height:46px;
+    }
+
+}
+
+
+/*======================================
+        SCROLLBAR
+======================================*/
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#f1f5f9;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#94a3b8;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#64748b;
+}
+
+
+/*======================================
+        SELECTION
+======================================*/
+
+::selection{
+    background:#2563eb;
+    color:#fff;
+}
+
+
+/*======================================
+        FINAL POLISH
+======================================*/
+
+button,
+input,
+select,
+textarea,
+a{
+    font-family:inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible{
+    outline:3px solid rgba(37,99,235,.2);
+    outline-offset:2px;
+}
