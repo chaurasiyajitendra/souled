@@ -58,7 +58,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     subCategory = models.ForeignKey(SubCategory,on_delete=models.CASCADE)
     childCategory = models.ForeignKey(ChildCategory,on_delete=models.CASCADE)
-    image = models.FileField(upload_to="produtc")
+    image = models.FileField(upload_to="product",blank=True,null=True)
     createdAt = models.DateField(auto_now_add=True,null=True,blank=True)
     active = models.BooleanField(default=True)
 

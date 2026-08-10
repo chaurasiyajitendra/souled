@@ -149,8 +149,11 @@
           </a>
 
           <button class="buy-btn">
-            <i class="fa-solid fa-bolt"></i>
-            Buy Now
+            <a href="{% url 'buyNow' product.id %}" class="buy-btn">
+
+              <i class="fa-solid fa-bolt"></i>
+              Buy Now
+            </a>
           </button>
         </div>
       </div>

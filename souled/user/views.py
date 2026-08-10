@@ -349,7 +349,6 @@ def calculate_cart_total(user_id):
     if not user_id:
         return 0
     
-    # Custom User model or Session ID ke mutabiq cart items filter karein
     cart_items = Cart.objects.filter(user_id=user_id)
     return sum(item.product.price * item.quantity for item in cart_items)
 
@@ -415,6 +414,69 @@ def removeFromCart(request, productId):
         'total': total,
     })
 
+def buy_now(request, id):
+
+    # User login check
+    if "user_id" not in request.session:
+        return redirect("/login/")
+
+    # Logged-in user
+    user = get_object_or_404(
+        User,
+        id=request.session["user_id"]
+    )
+
+    # Product
+    product = get_object_or_404(
+        Product,
+        id=id,
+        active=True
+    )
+
+    # Quantity
+    quantity = int(request.POST.get("quantity", 1))
+
+    # Quantity validation
+    if quantity < 1:
+        quantity = 1
+
+    # Stock check
+    if quantity > product.quantity:
+        quantity = product.quantity
+
+    # Total price
+    total_price = product.price * quantity
+
+    # POST -> Order create
+    if request.method == "POST":
+
+        name = request.POST.get("name")
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        payment_method = request.POST.get("payment", "COD")
+
+        order = Order.objects.create(
+            user=user,
+            product=product,
+            quantity=quantity,
+            total_price=total_price,
+            full_name=name,
+            phone=phone,
+            address=address,
+            payment_method=payment_method,
+            status="Pending"
+        )
+
+        return redirect("orderSuccess", id=order.id)
+
+    # GET -> Buy Now page
+    return render(request, "buyNow.html", {
+        "product": product,
+        "quantity": quantity,
+        "total_price": total_price,
+        "user": user,
+    })
+
 def checkout(request):
     if "user_id" not in request.session:
         return redirect("/login/")
@@ -469,7 +531,7 @@ def checkout(request):
 
         return redirect("orderSuccess", id=order.id)
 
-    # Initial GET Request calculation
+
     total = subtotal + shipping - discount
 
     context = {

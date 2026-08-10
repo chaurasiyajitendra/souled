@@ -1,0 +1,519 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buy Now - ShopKart</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/buyNow.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    >
+</head>
+
+<body>
+
+{% include "navbar.html" %}
+
+
+<!-- =========================================
+        CHECKOUT HERO
+========================================= -->
+
+<section class="checkout-hero">
+
+    <div class="hero-content">
+
+        <span>
+            <i class="fa-solid fa-bag-shopping"></i>
+            Buy Now
+        </span>
+
+        <h1>Complete Your Order</h1>
+
+        <p>
+            Enter your delivery details and place your order.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+        CHECKOUT CONTAINER
+========================================= -->
+
+<div class="checkout-container">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <!-- =========================================
+                LEFT SIDE
+        ========================================= -->
+
+        <div class="checkout-left">
+
+
+            <!-- DELIVERY DETAILS -->
+
+            <div class="checkout-card">
+
+                <div class="section-title">
+
+                    <div class="title-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+
+                    <div>
+                        <h2>Delivery Details</h2>
+
+                        <p>
+                            Where should we deliver your order?
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value="{{ user.name }}"
+                                placeholder="Enter your full name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <div class="input-box">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Enter your phone number"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full-width">
+
+                        <label for="address">
+                            Delivery Address
+                        </label>
+
+                        <div class="input-box textarea-box">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <textarea
+                                id="address"
+                                name="address"
+                                rows="4"
+                                placeholder="Enter your complete delivery address"
+                                required
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PAYMENT -->
+
+            <div class="checkout-card">
+
+                <div class="section-title">
+
+                    <div class="title-icon">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+
+                    <div>
+                        <h2>Payment Method</h2>
+
+                        <p>
+                            Select your preferred payment method.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="payment-options">
+
+
+                    <!-- COD -->
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="COD"
+                            checked
+                        >
+
+                        <div class="payment-content">
+
+                            <div class="payment-icon">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>Cash on Delivery</h3>
+
+                                <p>
+                                    Pay when your order arrives.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </label>
+
+
+                    <!-- UPI -->
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="UPI"
+                        >
+
+                        <div class="payment-content">
+
+                            <div class="payment-icon">
+                                <i class="fa-solid fa-mobile-screen-button"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>UPI</h3>
+
+                                <p>
+                                    Pay securely using UPI.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </label>
+
+
+                    <!-- CARD -->
+
+                    <label class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Card"
+                        >
+
+                        <div class="payment-content">
+
+                            <div class="payment-icon">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </div>
+
+                            <div>
+
+                                <h3>Credit / Debit Card</h3>
+
+                                <p>
+                                    Pay securely using your card.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+                RIGHT SIDE
+        ========================================= -->
+
+        <div class="checkout-right">
+
+
+            <!-- PRODUCT SUMMARY -->
+
+            <div class="checkout-card order-summary">
+
+                <div class="summary-header">
+
+                    <h2>
+                        <i class="fa-solid fa-box"></i>
+                        Your Product
+                    </h2>
+
+                </div>
+
+
+                <div class="product-summary">
+
+
+                    <div class="product-image">
+
+                        {% if product.image %}
+
+                            <img
+                                src="{{ product.image.url }}"
+                                alt="{{ product.name }}"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="https://placehold.co/150x150"
+                                alt="Product"
+                            >
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="product-details">
+
+                        <h3>
+                            {{ product.name }}
+                        </h3>
+
+                        <p class="product-category">
+                            {{ product.category.name }}
+                        </p>
+
+                        <div class="product-price">
+
+                            ₹{{ product.price }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTITY -->
+
+                <div class="quantity-row">
+
+                    <span>
+                        Quantity
+                    </span>
+
+                    <strong>
+                        {{ quantity }}
+                    </strong>
+
+                </div>
+
+
+                <!-- PRICE -->
+
+                <div class="price-details">
+
+                    <div>
+
+                        <span>
+                            Product Price
+                        </span>
+
+                        <span>
+                            ₹{{ product.price }}
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Quantity
+                        </span>
+
+                        <span>
+                            × {{ quantity }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="subtotal">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹{{ total_price }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Shipping
+                        </span>
+
+                        <span class="free">
+                            FREE
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL -->
+
+                <div class="total-row">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        ₹{{ total_price }}
+                    </strong>
+
+                </div>
+
+
+                <!-- PLACE ORDER -->
+
+                <button
+                    type="submit"
+                    class="place-order-btn"
+                >
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Place Order
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+                <p class="secure-text">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Your information is secure and protected.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- =========================================
+        FOOTER
+========================================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <p>
+            © 2026 <strong>ShopKart</strong>.
+            All Rights Reserved.
+        </p>
+
+        <div class="footer-icons">
+
+            <i class="fa-brands fa-facebook-f"></i>
+
+            <i class="fa-brands fa-instagram"></i>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+            <i class="fa-brands fa-linkedin-in"></i>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>

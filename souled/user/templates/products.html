@@ -64,10 +64,12 @@
 
             <h2>₹{{ product.price }}</h2>
 
-            <button>
-              <i class="fa-solid fa-cart-shopping"></i>
-              Add to Cart
-            </button>
+            <a href="{% url 'addToCart' product.id %}">
+              <button>
+                <i class="fa-solid fa-cart-shopping"></i>
+                Add to Cart
+              </button>
+            </a>
           </div>
         </div>
 

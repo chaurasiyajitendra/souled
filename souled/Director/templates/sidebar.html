@@ -9,7 +9,7 @@
     </div>
 
     <ul class="sidebar-nav">
-        <li class="active">
+        <li>
             <a href="{% url 'index' %}">
                 <i class="fa-solid fa-gauge-high"></i>
                 <span>Dashboard</span>
@@ -34,7 +34,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{% url 'logout' %}">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Logout</span>
             </a>
@@ -46,3 +46,18 @@
         <span>All modules online</span>
     </div>
 </aside>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+       
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll(".sidebar-nav li a");
+
+        navLinks.forEach(link => {
+           
+            if (link.getAttribute("href") === currentPath) {
+                
+                link.parentElement.classList.add("active");
+            }
+        });
+    });
+</script>
