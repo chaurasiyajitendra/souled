@@ -1,11 +1,20 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import User, Product, Category, SubCategory, ChildCategory,Cart,Wishlist,Order
+from .models import User, Product, Category, SubCategory, ChildCategory,Cart,Wishlist,Order,Payment
 from django.contrib.auth.hashers import make_password, check_password
 from decimal import Decimal
 from django.contrib import messages
 from django.utils import timezone
 from django.http import JsonResponse
 from django.db.models import Q
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+
+
+
+client = razorpay.Client(
+    auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+)
 
 
 # Create your views here.
@@ -529,7 +538,7 @@ def checkout(request):
 
         cart_items.delete()
 
-        return redirect("orderSuccess", id=order.id)
+        return redirect("payment_page", order_id=order.id)
 
 
     total = subtotal + shipping - discount
@@ -551,11 +560,155 @@ def orders(req):
 
     userId = req.session["user_id"]
     user = User.objects.get(id=userId)
-
-    # Database se user ke orders fetch karke template ko bhejen
+    
     user_orders = Order.objects.filter(user=user).order_by("-created_at")
 
     return render(req, "myOrder.html", {"orders": user_orders})
+
+
+def payment_page(request, order_id):
+
+    if "user_id" not in request.session:
+        return redirect("/login/")
+
+    user = get_object_or_404(
+        User,
+        id=request.session["user_id"]
+    )
+
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=user
+    )
+
+    # Razorpay amount paise me leta hai
+    amount = int(order.total_price * 100)
+
+    # Razorpay order create
+    razorpay_order = client.order.create({
+        "amount": amount,
+        "currency": "INR",
+        "payment_capture": 1
+    })
+
+    # Payment database me create
+    Payment.objects.create(
+        order=order,
+        razorpay_order_id=razorpay_order["id"],
+        amount=order.total_price,
+    )
+
+    return render(request, "paymentPage.html", {
+        "order": order,
+        "order_id": razorpay_order["id"],
+        "amount": amount,
+        "key_id": settings.RAZORPAY_KEY_ID,
+    })
+
+
+@csrf_exempt
+def payment_success(request):
+
+    if request.method != "POST":
+        return redirect("/")
+
+    payment_id = request.POST.get("razorpay_payment_id")
+    razorpay_order_id = request.POST.get("razorpay_order_id")
+    signature = request.POST.get("razorpay_signature")
+
+    try:
+
+        payment = Payment.objects.select_related("order").get(
+            razorpay_order_id=razorpay_order_id
+        )
+
+        # Razorpay signature verification
+        params = {
+            "razorpay_order_id": razorpay_order_id,
+            "razorpay_payment_id": payment_id,
+            "razorpay_signature": signature
+        }
+
+        client.utility.verify_payment_signature(params)
+
+        # Payment update
+        payment.razorpay_payment_id = payment_id
+        payment.razorpay_signature = signature
+        payment.status = "Success"
+        payment.save()
+
+        # Order update
+        order = payment.order
+        order.status = "Confirmed"
+        order.save()
+
+        return render(request, "orderSuccess.html", {
+            "order": order,
+            "amount": payment.amount,
+            "payment_id": payment_id,
+            "order_id": razorpay_order_id,
+        })
+
+    except razorpay.errors.SignatureVerificationError:
+
+        return JsonResponse({
+            "status": "error",
+            "message": "Payment verification failed."
+        }, status=400)
+
+    except Payment.DoesNotExist:
+
+        return JsonResponse({
+            "status": "error",
+            "message": "Payment record not found."
+        }, status=404)
+
+@csrf_exempt
+def payment_failed(request):
+
+    if request.method != "POST":
+        return JsonResponse({
+            "status": "error",
+            "message": "Invalid request"
+        }, status=400)
+
+    try:
+
+        razorpay_order_id = request.POST.get(
+            "razorpay_order_id"
+        )
+
+        if not razorpay_order_id:
+            return JsonResponse({
+                "status": "error",
+                "message": "Razorpay order ID missing"
+            }, status=400)
+
+        payment = Payment.objects.select_related("order").get(
+            razorpay_order_id=razorpay_order_id
+        )
+
+        # Payment failed
+        payment.status = "Failed"
+        payment.save()
+
+        # Order cancel
+        order = payment.order
+        order.status = "Cancelled"
+        order.save()
+
+        return JsonResponse({
+            "status": "success",
+            "message": "Payment failed and order cancelled."
+        })
+
+    except Payment.DoesNotExist:
+
+        return JsonResponse({
+            "status": "error",
+            "message": "Payment record not found."
+        }, status=404)
 
 def orderSuccess(request, id):
 

@@ -1,215 +1,153 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>My Wishlist</title>
 
-    <link rel="stylesheet"
-          href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
-    <link rel="stylesheet"
-          href="{% static 'css/wishlist.css' %}">
+    <link rel="stylesheet" href="{% static 'css/wishlist.css' %}" />
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
 
-</head>
+  <body>
+    {% include "navbar.html" %}
 
-<body>
-
-{% include "navbar.html" %}
-
-<!--========================
+    <!--========================
         HERO
 =========================-->
 
-<section class="wishlist-hero">
-
-    <div class="hero-content">
-
+    <section class="wishlist-hero">
+      <div class="hero-content">
         <span>
+          <i class="fa-solid fa-heart"></i>
 
-            <i class="fa-solid fa-heart"></i>
-
-            My Wishlist
-
+          My Wishlist
         </span>
 
         <h1>Saved Products</h1>
 
         <p>
-
-            Keep all your favourite products in one place and purchase them anytime.
-
+          Keep all your favourite products in one place and purchase them
+          anytime.
         </p>
+      </div>
+    </section>
 
-    </div>
-
-</section>
-
-<!--========================
+    <!--========================
         WISHLIST
 =========================-->
 
-<section class="wishlist-section">
+    <section class="wishlist-section">
+      <div class="wishlist-container">
+        {% if wishlist_items %}
 
-<div class="wishlist-container">
+        <div class="wishlist-grid">
+          {% for item in wishlist_items %}
 
-{% if wishlist_items %}
+          <div class="wishlist-card">
+            <div class="wishlist-image">
+              {% if item.product.image %}
 
-<div class="wishlist-grid">
+              <img
+                src="{{ item.product.image.url }}"
+                alt="{{ item.product.name }}"
+              />
 
-{% for item in wishlist_items %}
+              {% else %}
 
-<div class="wishlist-card">
+              <img src="https://placehold.co/350x350" alt="No Image" />
 
-<div class="wishlist-image">
+              {% endif %}
 
-    {% if item.product.image %}
+              <a href="{% url 'removeWishlist' item.id %}" class="remove-btn">
+                <i class="fa-solid fa-xmark"></i>
+              </a>
+            </div>
 
-    <img src="{{ item.product.image.url }}"
-         alt="{{ item.product.name }}">
+            <div class="wishlist-content">
+              <h3>{{ item.product.name }}</h3>
 
-    {% else %}
+              <p>{{ item.product.detail|truncatechars:90 }}</p>
 
-    <img src="https://placehold.co/350x350"
-         alt="No Image">
+              <div class="price">₹{{ item.product.price }}</div>
+              <div class="wishlist-actions">
+                <a
+                  href="{% url 'product_detail' item.product.id %}"
+                  class="view-btn"
+                >
+                  <i class="fa-solid fa-eye"></i>
 
-    {% endif %}
+                  View Product
+                </a>
 
-    <a href="{% url 'removeWishlist' item.id %}"
-       class="remove-btn">
+                <a
+                  style="margin-top: 0;"
+                  href="{% url 'addToCart' item.product.id %}"
+                  class="cart-btn"
+                >
+                  <i class="fa-solid fa-cart-shopping"></i>
 
-        <i class="fa-solid fa-xmark"></i>
+                  Add to Cart
+                </a>
+              </div>
+            </div>
+          </div>
 
-    </a>
+          {% endfor %}
+        </div>
 
-</div>
+        {% else %}
 
-<div class="wishlist-content">
-
-<h3>
-
-{{ item.product.name }}
-
-</h3>
-
-<p>
-
-{{ item.product.detail|truncatechars:90 }}
-
-</p>
-
-<div class="price">
-
-₹{{ item.product.price }}
-
-</div>
-<div class="wishlist-actions">
-
-    <a href="{% url 'product_detail' item.product.id %}"
-       class="view-btn">
-
-        <i class="fa-solid fa-eye"></i>
-
-        View Product
-
-    </a>
-
-    <a href="{% url 'addToCart' item.product.id %}"
-       class="cart-btn">
-
-        <i class="fa-solid fa-cart-shopping"></i>
-
-        Add to Cart
-
-    </a>
-
-</div>
-
-</div>
-
-</div>
-
-{% endfor %}
-
-</div>
-
-{% else %}
-
-<!--========================
+        <!--========================
         EMPTY WISHLIST
 =========================-->
 
-<div class="empty-wishlist">
+        <div class="empty-wishlist">
+          <div class="empty-icon">
+            <i class="fa-regular fa-heart"></i>
+          </div>
 
-    <div class="empty-icon">
+          <h2>Your Wishlist is Empty</h2>
 
-        <i class="fa-regular fa-heart"></i>
+          <p>Save your favourite products here and buy them later.</p>
 
-    </div>
+          <a href="{% url 'home' %}" class="shop-btn">
+            <i class="fa-solid fa-bag-shopping"></i>
 
-    <h2>Your Wishlist is Empty</h2>
+            Continue Shopping
+          </a>
+        </div>
 
-    <p>
-
-        Save your favourite products here and buy them later.
-
-    </p>
-
-    <a href="{% url 'home' %}"
-       class="shop-btn">
-
-        <i class="fa-solid fa-bag-shopping"></i>
-
-        Continue Shopping
-
-    </a>
-
-</div>
-
-{% endif %}
-
-</div>
-
-</section>
-<!--========================
+        {% endif %}
+      </div>
+    </section>
+    <!--========================
         FOOTER
 =========================-->
 
-<footer class="wishlist-footer">
-
-    <div class="footer-content">
-
-        <p>
-
-            © 2026 <strong>ShopKart</strong>. All Rights Reserved.
-
-        </p>
+    <footer class="wishlist-footer">
+      <div class="footer-content">
+        <p>© 2026 <strong>ShopKart</strong>. All Rights Reserved.</p>
 
         <div class="footer-icons">
+          <i class="fa-brands fa-facebook-f"></i>
 
-            <i class="fa-brands fa-facebook-f"></i>
+          <i class="fa-brands fa-instagram"></i>
 
-            <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-x-twitter"></i>
 
-            <i class="fa-brands fa-x-twitter"></i>
-
-            <i class="fa-brands fa-linkedin-in"></i>
-
+          <i class="fa-brands fa-linkedin-in"></i>
         </div>
-
-    </div>
-
-</footer>
-
-</body>
-
+      </div>
+    </footer>
+  </body>
 </html>

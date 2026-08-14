@@ -68,7 +68,7 @@ body{
 .wishlist-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-    gap:30px;
+    gap:5rem;
 }
 
 /*======================================
@@ -77,6 +77,7 @@ body{
 
 .wishlist-card{
     background:#fff;
+    width: 100%;
     border-radius:20px;
     overflow:hidden;
     border:1px solid #e2e8f0;
@@ -170,6 +171,8 @@ body{
     display:flex;
     gap:12px;
 }
+
+
 
 .view-btn,
 .cart-btn{
