@@ -9,7 +9,7 @@ class User(models.Model):
     name = models.CharField(max_length=40)
     username = models.CharField(unique=True,max_length=150)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=45)
+    password = models.CharField(max_length=255)
     profile = models.FileField(upload_to="profile",blank=True,null=True)
     phone = models.CharField(max_length=10,null=True,blank=True)
     address = models.TextField(blank=True)
@@ -28,19 +28,33 @@ class Category(models.Model):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,related_name="subcategories")
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name="subcategories"
+    )
     name = models.CharField(max_length=100)
     slug = models.SlugField(blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.category.name} → {self.name}"
 
 
 class ChildCategory(models.Model):
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE,related_name="childcategories")
+    subcategory = models.ForeignKey(
+        SubCategory,
+        on_delete=models.CASCADE,
+        related_name="childcategories"
+    )
     name = models.CharField(max_length=100)
     slug = models.SlugField(blank=True)
 
@@ -48,6 +62,9 @@ class ChildCategory(models.Model):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.subcategory.name} → {self.name}"
+    
 class Product(models.Model):
     name = models.CharField(max_length=100)
     detail = models.CharField(max_length=500)
