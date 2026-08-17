@@ -107,7 +107,7 @@ def logout(req):
     return redirect("/login")
 
 def profile(req):
-
+    
     if "user_id" not in req.session:
         return redirect("/login")
     return render(req,"profile.html")
