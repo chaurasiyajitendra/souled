@@ -9,6 +9,7 @@ from django.db.models import Q
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 
 
@@ -107,10 +108,7 @@ def logout(req):
     return redirect("/login")
 
 def profile(req):
-    
-    if "user_id" not in req.session:
-        return redirect("/login")
-    return render(req,"profile.html")
+    return HttpResponse("PROFILE WORKING")
 
 
 def editProfile(req):

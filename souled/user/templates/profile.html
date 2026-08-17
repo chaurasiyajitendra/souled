@@ -27,7 +27,11 @@
       <div class="profile-card">
         <div class="profile-left">
           <div class="profile-image">
+            {% if user.profile %}
+            <img src="{{ user.profile.url }}" alt="{{ user.name }}" />
+            {% else %}
             <img src="{% static 'images/user.png' %}" alt="User" />
+            {% endif %}
           </div>
 
           <div class="profile-info">
