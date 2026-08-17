@@ -100,7 +100,7 @@
   <!-- Icons -->
 
   <div class="icons">
-    <a href="/wishlist" class="icon">
+    <a href="{% url 'wishlist' %}" class="icon">
       <i class="fa-regular fa-heart"></i>
       {% if wishlist_count > 0 %}
         <span class="badge">{{ wishlist_count }}</span>
@@ -108,7 +108,7 @@
 
     </a>
 
-    <a href="/cart" class="icon">
+    <a href="{% url 'cart' %}" class="icon">
       <i class="fa-solid fa-cart-shopping"></i>
       {% if cart_count > 0 %}
         <span class="badge">{{ cart_count }}</span>
@@ -117,7 +117,7 @@
 
     {% if request.session.username %}
 
-    <a href="/profile/" class="icon">
+    <a href="{% url 'profile' %}" class="icon">
       <i class="fa-solid fa-user"></i>
     </a>
 

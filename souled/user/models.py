@@ -1,5 +1,3 @@
-from symtable import Class
-
 from django.db import models
 from django.utils.text import slugify
 
@@ -9,9 +7,9 @@ from django.utils.text import slugify
 
 class User(models.Model):
     name = models.CharField(max_length=40)
-    username = models.CharField(unique=True)
+    username = models.CharField(unique=True,max_length=150)
     email = models.EmailField(unique=True)
-    password = models.CharField()
+    password = models.CharField(max_length=45)
     profile = models.FileField(upload_to="profile",blank=True,null=True)
     phone = models.CharField(max_length=10,null=True,blank=True)
     address = models.TextField(blank=True)
