@@ -28,9 +28,8 @@ def profile(req):
         return redirect("/login")
     return render(req,"profile.html");
 
-def testing(req,id):
-    user = User.objects.filter(id=id).first()
-    return HttpResponse(user)
+def about(req):
+    return render(req,"about.html")
 
 
 
@@ -187,8 +186,8 @@ def changePassword(req):
             return render(req,"changePassword.html",{"err":"Current password is incorrect."})
     return render(req,"changePassword.html")
 
-def about(req):
-    return render(req,"about.html")
+# def about(req):
+#     return render(req,"about.html")
 
 def contact(req):
     return render(req,"contact.html")
