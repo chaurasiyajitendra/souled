@@ -35,7 +35,7 @@
 
           <h4>
             <a
-              style="color: black"
+              style="color: black ; text-transform: capitalize;"
               href="{% url 'subcategory' category.slug subcategory.slug %}"
               >{{ subcategory.name }}</a
             >
@@ -46,6 +46,7 @@
 
             <li>
               <a
+                style="text-transform: capitalize;"
                 href="{% url 'childcategory' category.slug subcategory.slug child.slug %}"
               >
                 {{ child.name }}

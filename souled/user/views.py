@@ -28,7 +28,7 @@ def profile(req):
         return redirect("/login")
     return render(req,"profile.html");
 
-def about(req):
+def about1(req):
     return render(req,"about.html")
 
 
@@ -119,11 +119,6 @@ def logout(req):
     req.session.flush()
 
     return redirect("/login")
-
-# def profile(req):
-#     if "user_id" not in req.session:
-#         return redirect("/login")
-#     return render(req,"profile.html");
 
 
 def editProfile(req):

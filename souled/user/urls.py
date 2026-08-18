@@ -5,16 +5,14 @@ urlpatterns = [
 
     #Testing Routes 
     path("profile/",views.profile,name="profile"),
-    path("about/",views.about,name="testingWithId"),
+    path("about/",views.about1,name="about"),
 
     path("",views.index,name="home"),
     path("register/", views.register, name="register"),
     path("login/", views.login, name="login"),
     path("logout/",views.logout,name="logout"),
-    # path("profile/",views.profile,name="profile"),
     path("edit-profile/",views.editProfile,name="editProfile"),
     path("change-password/",views.changePassword,name="changePassword"),
-    # path("about/" ,views.about,name="about"),
     path("contact/" ,views.contact,name="contact"),
     path("cart/" ,views.cart,name="cart"),
     path("add-to-cart/<int:product_id>/", views.addToCart, name="addToCart"),
