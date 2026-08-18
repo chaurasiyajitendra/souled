@@ -29,7 +29,7 @@ def profile(req):
     return render(req,"profile.html");
 
 def about1(req):
-    return render(req,"about.html")
+    return render(req,"about1.html")
 
 
 
