@@ -24,7 +24,9 @@ client = razorpay.Client(
 #Testing Routing function
 
 def profile(req):
-    return HttpResponse("Abc Workingg..")
+    if "user_id" not in req.session:
+        return redirect("/login")
+    return render(req,"profile.html");
 
 def testing(req,id):
     user = User.objects.filter(id=id).first()
