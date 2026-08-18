@@ -20,6 +20,18 @@ client = razorpay.Client(
 
 # Create your views here.
 
+
+#Testing Routing function
+
+def test(req):
+    return HttpResponse("Abc Workingg..")
+
+def testing(req,id):
+    user = User.objects.filter(id=id).first()
+    return HttpResponse(user)
+
+
+
 def index(req):
 
     trending_products = Product.objects.order_by("-id").filter(active=True)[:8]
