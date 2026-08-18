@@ -4,14 +4,14 @@ from . import views
 urlpatterns = [
 
     #Testing Routes 
-    path("test/",views.test,name="test"),
-    path("testwithid/<int:id>/",views.testing,name="testingWithId"),
+    path("profile/",views.profile,name="profile"),
+    path("profilewithid/<int:id>/",views.testing,name="testingWithId"),
 
     path("",views.index,name="home"),
     path("register/", views.register, name="register"),
     path("login/", views.login, name="login"),
     path("logout/",views.logout,name="logout"),
-    path("profile/",views.profile,name="profile"),
+    # path("profile/",views.profile,name="profile"),
     path("edit-profile/",views.editProfile,name="editProfile"),
     path("change-password/",views.changePassword,name="changePassword"),
     path("about/" ,views.about,name="about"),

@@ -23,7 +23,7 @@ client = razorpay.Client(
 
 #Testing Routing function
 
-def test(req):
+def profile(req):
     return HttpResponse("Abc Workingg..")
 
 def testing(req,id):
@@ -119,10 +119,10 @@ def logout(req):
 
     return redirect("/login")
 
-def profile(req):
-    if "user_id" not in req.session:
-            return redirect("/login")
-    return render(req,"profile.html");
+# def profile(req):
+#     if "user_id" not in req.session:
+#         return redirect("/login")
+#     return render(req,"profile.html");
 
 
 def editProfile(req):
